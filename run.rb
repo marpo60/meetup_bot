@@ -18,7 +18,8 @@ class App
    28497632, # Montevideo-Web-Developers
    17631212, # Rust-Uruguay
    5946782,  # py-mvd
-   31611165  # Loop-Talks
+   31611165, # Loop-Talks
+   18188651, # Laravel-UY
   ].join(",")
 
   def list_message
