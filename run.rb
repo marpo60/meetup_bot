@@ -18,6 +18,7 @@ class App
    28497632, # Montevideo-Web-Developers
    17631212, # Rust-Uruguay
    5946782,  # py-mvd
+   31611165  # Loop-Talks
   ].join(",")
 
   def list_message
