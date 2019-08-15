@@ -20,6 +20,7 @@ class App
    5946782,  # py-mvd
    31611165, # Loop-Talks
    18188651, # Laravel-UY
+   29967071, # Montevideo Vue.JS Meetup
   ].join(",")
 
   def list_message
