@@ -1,0 +1,18 @@
+name: Post Slack (Prod)
+on:
+  schedule:
+  - cron:  '0 12 * * 1'
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up Ruby 2.6
+      uses: actions/setup-ruby@v1
+      with:
+        ruby-version: 2.6.x
+    - name: Post
+      env:
+        WEBHOOK_URL: ${{ secrets.ANUNCIOS_WEBHOOK_URL }}
+      run: |
+        ruby post_to_slack.rb
