@@ -4,4 +4,4 @@ WORKDIR /usr/src/app
 
 COPY . .
 
-CMD ["ruby", "./run.rb"]
+CMD ["ruby", "./server.rb"]
