@@ -2,6 +2,7 @@
 require 'net/http'
 require 'json'
 require 'cgi'
+require 'time'
 require 'singleton'
 
 class App
@@ -37,6 +38,27 @@ class App
         }
       ]
     })
+  end
+
+  def post_to_slack
+    webhook_url = ENV["WEBHOOK_URL"]
+
+    if webhook_url
+      uri = URI.parse(webhook_url)
+
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true
+      request = Net::HTTP::Post.new(
+        uri.request_uri,
+        'Content-Type' => 'application/json'
+      )
+      request.body = list_message
+
+      response = http.request(request)
+      puts response.body
+    else
+      puts "No Webhook url"
+    end
   end
 
   def verify_signature(request)
