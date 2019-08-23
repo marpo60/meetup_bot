@@ -68,7 +68,7 @@ class App
   private
 
   def calculate_signature(request)
-    timestamp = request.header["x-slack-request-timestamp"].first
+    timestamp = request["x-slack-request-timestamp"]
     base_string_for_signature = "v0:#{timestamp}:#{request.body}"
 
     hex = OpenSSL::HMAC.hexdigest("SHA256", ENV["SIGNING_SECRET"], base_string_for_signature)
