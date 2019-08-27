@@ -21,6 +21,9 @@ class App
    31611165, # Loop-Talks
    18188651, # Laravel-UY
    29967071, # Montevideo Vue.JS Meetup
+   20190084, # NahualUY
+   32642296, # AETERNITY-URUGUAY
+   31980598, # Odoo-ERP-Uruguay 
   ].join(",")
 
   def list_message
