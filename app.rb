@@ -24,7 +24,7 @@ class App
    20190084, # NahualUY
    32642296, # AETERNITY-URUGUAY
    31980598, # Odoo-ERP-Uruguay
-   264059344, # mujeresituy
+   32593975, # mujeresituy
   ].join(",")
 
   def list_message
