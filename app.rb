@@ -23,7 +23,8 @@ class App
    29967071, # Montevideo Vue.JS Meetup
    20190084, # NahualUY
    32642296, # AETERNITY-URUGUAY
-   31980598, # Odoo-ERP-Uruguay 
+   31980598, # Odoo-ERP-Uruguay
+   32593975, # mujeresituy
   ].join(",")
 
   def list_message
