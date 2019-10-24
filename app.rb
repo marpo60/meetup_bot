@@ -25,6 +25,7 @@ class App
    32642296, # AETERNITY-URUGUAY
    31980598, # Odoo-ERP-Uruguay
    32593975, # mujeresituy
+   32792756, # Developer Circle montevideo
   ].join(",")
 
   def list_message
