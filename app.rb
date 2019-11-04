@@ -26,6 +26,7 @@ class App
    31980598, # Odoo-ERP-Uruguay
    32593975, # mujeresituy
    32792756, # Developer Circle montevideo
+   15581002, # IBM Developers Montevideo
   ].join(",")
 
   def list_message
