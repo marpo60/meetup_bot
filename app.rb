@@ -8,26 +8,26 @@ require 'singleton'
 class App
   include Singleton
 
-  GROUPS_ID = [
-   12641372, # ember-montevideo
-   20489638, # ReactJS-Uruguay
-   18755240, # Angular-MVD
-   5844892,  # montevideojs
-   18200397, # Front-end-MVD
-   19945900, # Elixir |> Montevideo
-   28497632, # Montevideo-Web-Developers
-   17631212, # Rust-Uruguay
-   5946782,  # py-mvd
-   31611165, # Loop-Talks
-   18188651, # Laravel-UY
-   29967071, # Montevideo Vue.JS Meetup
-   20190084, # NahualUY
-   32642296, # AETERNITY-URUGUAY
-   31980598, # Odoo-ERP-Uruguay
-   32593975, # mujeresituy
-   32792756, # Developer Circle montevideo
-   15581002, # IBM Developers Montevideo
-  ].join(",")
+  GROUP_NAMES = [
+   'ember-montevideo',
+   'ReactJS-Uruguay',
+   'Angular-MVD',
+   'montevideojs',
+   'Front-end-MVD',
+   'Elixir-Montevideo',
+   'Montevideo-Web-Developers',
+   'Rust-Uruguay',
+   'py-mvd',
+   'Loop-Talks',
+   'Laravel-UY',
+   'Montevideo-Vue-JS-Meetup',
+   'NahualUY',
+   'AETERNITY-URUGUAY',
+   'Odoo-ERP-Uruguay',
+   'mujeresituy',
+   'Developer-Circle-montevideo',
+   'IBM-Developers-Montevideo',
+  ]
 
   def list_message
     meetups = fetch_upcoming_meetups
@@ -90,9 +90,9 @@ class App
     "• #{time.strftime('%e %B - %H:%M')} - #{meetup['group']['name']} - #{meetup['event_url']}"
   end
 
-  def fetch_upcoming_meetups()
+  def fetch_upcoming_meetups
     query_string = URI.encode_www_form(
-      group_id: GROUPS_ID,
+      group_id: fetch_group_ids.join(","),
       only: "time,group.name,event_url",
       status: "upcoming",
       time: ",1m"
@@ -101,5 +101,13 @@ class App
     res = Net::HTTP.get_response(uri)
 
     JSON.parse(res.body)["results"]
+  end
+
+  def fetch_group_ids
+    GROUP_NAMES.map do |name|
+      uri = URI("https://api.meetup.com/#{name}")
+      res = Net::HTTP.get_response(uri)
+      JSON.parse(res.body)["id"]
+    end
   end
 end
