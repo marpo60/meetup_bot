@@ -52,4 +52,5 @@ server.mount '/auth/redirect', AuthRedirectServlet
 server.mount '/', SlackCommandServlet
 
 trap("INT") {server.shutdown}
+App.instance.init
 server.start

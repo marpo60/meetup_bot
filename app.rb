@@ -29,6 +29,10 @@ class App
    'IBM-Developers-Montevideo',
   ]
 
+  def init
+    fetch_group_ids
+  end
+
   def list_message
     meetups = fetch_upcoming_meetups
 
@@ -104,10 +108,12 @@ class App
   end
 
   def fetch_group_ids
-    GROUP_NAMES.map do |name|
-      uri = URI("https://api.meetup.com/#{name}")
-      res = Net::HTTP.get_response(uri)
-      JSON.parse(res.body)["id"]
+    @group_ids ||= begin
+      GROUP_NAMES.map do |name|
+        uri = URI("https://api.meetup.com/#{name}")
+        res = Net::HTTP.get_response(uri)
+        JSON.parse(res.body)["id"]
+      end
     end
   end
 end
