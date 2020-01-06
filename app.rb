@@ -27,6 +27,7 @@ class App
    'mujeresituy',
    'Developer-Circle-montevideo',
    'IBM-Developers-Montevideo',
+   'Testing-Uy',
   ]
 
   def init
