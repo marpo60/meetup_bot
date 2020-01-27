@@ -23,7 +23,6 @@ class App
    'Montevideo-Vue-JS-Meetup',
    'NahualUY',
    'AETERNITY-URUGUAY',
-   'Odoo-ERP-Uruguay',
    'mujeresituy',
    'Developer-Circle-montevideo',
    'IBM-Developers-Montevideo',
