@@ -27,6 +27,8 @@ class App
    'Developer-Circle-montevideo',
    'IBM-Developers-Montevideo',
    'Testing-Uy',
+   'dribbblemvd',
+   'Colaboradores-en-Gestion-de-Proyectos',
   ]
 
   def init
