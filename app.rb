@@ -29,6 +29,7 @@ class App
    'Testing-Uy',
    'dribbblemvd',
    'Colaboradores-en-Gestion-de-Proyectos',
+   'PyLadiesUy'
   ]
 
   def init
