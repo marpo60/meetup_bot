@@ -115,7 +115,7 @@ class App
         uri = URI("https://api.meetup.com/#{name}")
         res = Net::HTTP.get_response(uri)
         JSON.parse(res.body)["id"]
-      end
+      end.compact
     end
   end
 end
