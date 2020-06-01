@@ -24,7 +24,6 @@ class App
    'NahualUY',
    'AETERNITY-URUGUAY',
    'mujeresituy',
-   'Developer-Circle-montevideo',
    'IBM-Developers-Montevideo',
    'Testing-Uy',
    'dribbblemvd',
