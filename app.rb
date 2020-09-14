@@ -28,7 +28,8 @@ class App
    'Testing-Uy',
    'dribbblemvd',
    'Colaboradores-en-Gestion-de-Proyectos',
-   'PyLadiesUy'
+   'PyLadiesUy',
+   'ruby-montevideo'
   ]
 
   def init
