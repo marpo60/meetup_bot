@@ -29,7 +29,8 @@ class App
    'dribbblemvd',
    'Colaboradores-en-Gestion-de-Proyectos',
    'PyLadiesUy',
-   'ruby-montevideo'
+   'ruby-montevideo',
+   'Montevideo-Applied-Data-Science-and-Big-Data'
   ]
 
   def init
