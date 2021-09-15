@@ -30,7 +30,8 @@ class App
    'Colaboradores-en-Gestion-de-Proyectos',
    'PyLadiesUy',
    'ruby-montevideo',
-   'Montevideo-Applied-Data-Science-and-Big-Data'
+   'Montevideo-Applied-Data-Science-and-Big-Data',
+   'montevideo-leadership-development-meetup-group'
   ]
 
   def init
