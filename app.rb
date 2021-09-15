@@ -31,7 +31,8 @@ class App
    'PyLadiesUy',
    'ruby-montevideo',
    'Montevideo-Applied-Data-Science-and-Big-Data',
-   'montevideo-leadership-development-meetup-group'
+   'montevideo-leadership-development-meetup-group',
+   'OWASP-Uruguay-Chapter'
   ]
 
   def init
