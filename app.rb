@@ -32,7 +32,8 @@ class App
    'ruby-montevideo',
    'Montevideo-Applied-Data-Science-and-Big-Data',
    'montevideo-leadership-development-meetup-group',
-   'OWASP-Uruguay-Chapter'
+   'OWASP-Uruguay-Chapter',
+   'agileuy'
   ]
 
   def init
