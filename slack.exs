@@ -1,6 +1,6 @@
 defmodule Slack do
   def post(text) do
-    webhook_url = System.get_env("WEBHOOK_URL")
+    webhook_url = System.fetch_env!("WEBHOOK_URL")
 
     Req.post!(webhook_url, body: text)
   end
@@ -13,7 +13,7 @@ defmodule Slack do
   end
 
   def verify_signature(conn) do
-    signing_secret = System.get_env("SIGNING_SECRET")
+    signing_secret = System.fetch_env!("SIGNING_SECRET")
     verify_signature(conn, signing_secret)
   end
 

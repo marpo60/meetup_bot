@@ -25,9 +25,9 @@ defmodule Router do
   get "/auth/redirect" do
     body = [
       code: conn.params["code"],
-      client_id: System.get_env("CLIENT_ID"),
-      client_secret: System.get_env("CLIENT_SECRET"),
-      redirect_uri: System.get_env("REDIRECT_URL")
+      client_id: System.fetch_env!("CLIENT_ID"),
+      client_secret: System.fetch_env!("CLIENT_SECRET"),
+      redirect_uri: System.fetch_env!("REDIRECT_URL")
     ]
 
     response = Req.post!("https://slack.com/api/oauth.access", form: body)
