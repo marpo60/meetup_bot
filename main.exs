@@ -1,11 +1,13 @@
 Mix.install([
   {:bandit, ">= 0.0.0"},
+  :req,
   {:ecto_sql, "~> 3.11.1"},
   {:ecto_sqlite3, "~> 0.14"},
   {:oban, "~> 2.8"}
 ])
 
 Code.require_file("meetup.exs")
+Code.require_file("slack.exs")
 Code.require_file("router.exs")
 Code.require_file("oban.exs")
 
