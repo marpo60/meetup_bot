@@ -1,8 +1,10 @@
 defmodule Slack do
   def post(text) do
-    webhook_url = System.fetch_env!("WEBHOOK_URL")
+    webhook_url = System.get_env("WEBHOOK_URL")
 
-    Req.post!(webhook_url, body: text)
+    if webhook_url do
+      Req.post!(webhook_url, body: text)
+    end
   end
 
   def slackbot?(conn) do
