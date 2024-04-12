@@ -14,6 +14,25 @@ defmodule Migration0 do
   end
 end
 
+defmodule PostToSlackWorker do
+  use Oban.Worker
+
+  def cron do
+    case System.get_env("TARGET") do
+      nil -> "* * * * *"
+      "local" -> "* * * * *"
+      "staging" -> "0 * * * 1-5"
+      "production" -> "0 13 * * 1"
+    end
+  end
+
+  @impl true
+  def perform(%Oban.Job{}) do
+    MeetupCache.values() |> Slack.build_text() |> Slack.post()
+    :ok
+  end
+end
+
 defmodule MeetupCacheWorker do
   use Oban.Worker
 

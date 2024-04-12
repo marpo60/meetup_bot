@@ -22,6 +22,7 @@ defmodule Main do
           {Oban.Plugins.Cron, crontab: [
             {"@reboot", MeetupCacheWorker},
             {"@hourly", MeetupCacheWorker},
+            {PostToSlackWorker.cron(), PostToSlackWorker},
           ]},
           {Oban.Plugins.Pruner, max_age: 300_000}
         ],
