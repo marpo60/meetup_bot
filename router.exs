@@ -1,6 +1,20 @@
 defmodule Router do
   use Plug.Router
 
+  defmodule CacheBodyReader do
+    def read_body(conn, opts) do
+      {:ok, body, conn} = Plug.Conn.read_body(conn, opts)
+      conn = update_in(conn.assigns[:raw_body], &[body | (&1 || [])])
+      {:ok, body, conn}
+    end
+  end
+
+  plug(Plug.Logger)
+  plug(Plug.Parsers,
+    parsers: [:urlencoded],
+    body_reader: {CacheBodyReader, :read_body, []}
+  )
+
   plug(:match)
   plug(:dispatch)
 
@@ -9,15 +23,39 @@ defmodule Router do
   end
 
   get "/auth/redirect" do
+    body = [
+      code: conn.params["code"],
+      client_id: System.get_env("CLIENT_ID"),
+      client_secret: System.get_env("CLIENT_SECRET"),
+      redirect_uri: System.get_env("REDIRECT_URL")
+    ]
+
+    response = Req.post!("https://slack.com/api/oauth.access", form: body)
+
+    # Hacky way to get the webhooks
+    IO.inspect(response, label: "Response from OAuth")
+
     send_resp(conn, 200, "OK")
   end
 
   post "/" do
-    send_resp(conn, 200, "200 OK")
+    if Slack.slackbot?(conn) and Slack.verify_signature(conn) do
+      if conn.params["text"] == "list" do
+        meetups = MeetupCache.values()
+        text = Slack.build_text(meetups)
+
+        conn
+        |> put_resp_content_type("application/json")
+        |> send_resp(200, text)
+      else
+        send_resp(conn, 200, "Comando incorrecto")
+      end
+    else
+      send_resp(conn, 200, "200 OK")
+    end
   end
 
   match _ do
     send_resp(conn, 404, ":(")
   end
 end
-
