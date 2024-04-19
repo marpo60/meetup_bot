@@ -1,4 +1,4 @@
-defmodule Slack do
+defmodule MeetupBot.Slack do
   def post(text) do
     webhook_url = System.get_env("WEBHOOK_URL")
 
@@ -25,10 +25,28 @@ defmodule Slack do
     [x_slack_request_timestamp] = Plug.Conn.get_req_header(conn, "x-slack-request-timestamp")
 
     to_sign = "v0:#{x_slack_request_timestamp}:#{raw_body}"
-    actual_signature = :crypto.mac(:hmac, :sha256, signing_secret, to_sign)
-    |> Base.encode16(case: :lower)
+
+    actual_signature =
+      :crypto.mac(:hmac, :sha256, signing_secret, to_sign)
+      |> Base.encode16(case: :lower)
 
     x_slack_signature == "v0=#{actual_signature}"
+  end
+
+  def build_text([]) do
+    """
+    {
+      "blocks": [
+        {
+          "type": "section",
+          "text": {
+            "type": "mrkdwn",
+            "text": "No hay meetups agendados"
+          }
+        }
+      ]
+    }
+    """
   end
 
   def build_text(meetups) do
@@ -49,7 +67,7 @@ defmodule Slack do
   end
 
   defp to_bullet_list(meetups) do
-    Enum.map_join(meetups, "\n", fn(meetup) -> to_bullet_item(meetup) end)
+    Enum.map_join(meetups, "\n", fn meetup -> to_bullet_item(meetup) end)
   end
 
   defp to_bullet_item(meetup) do
