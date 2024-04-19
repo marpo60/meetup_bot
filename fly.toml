@@ -7,6 +7,9 @@ kill_timeout = "5s"
 
 [build]
 
+[deploy]
+  release_command = '/app/bin/migrate'
+
 [env]
   PORT = "8080"
   PRIMARY_REGION = "mia"
