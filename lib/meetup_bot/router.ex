@@ -1,8 +1,11 @@
 defmodule MeetupBot.Router do
   use Plug.Router
 
+  require OpenTelemetry.Tracer
+
   alias MeetupBot.MeetupCache
   alias MeetupBot.Slack
+  alias OpenTelemetry.Tracer
 
   defmodule CacheBodyReader do
     def read_body(conn, opts) do
@@ -23,7 +26,9 @@ defmodule MeetupBot.Router do
   plug(:dispatch)
 
   get "/" do
-    send_resp(conn, 200, "Hello, World!")
+    Tracer.with_span("request") do
+      send_resp(conn, 200, "Hello, World!")
+    end
   end
 
   get "/auth/redirect" do

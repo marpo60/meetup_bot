@@ -7,6 +7,14 @@ defmodule MeetupBot.MixProject do
       version: "0.1.0",
       elixir: "~> 1.16",
       start_permanent: Mix.env() == :prod,
+      releases: [
+        meetup_bot: [
+          applications: [
+            opentelemetry_exporter: :permanent,
+            opentelemetry: :temporary
+          ]
+        ]
+      ],
       deps: deps()
     ]
   end
@@ -26,7 +34,10 @@ defmodule MeetupBot.MixProject do
       {:req, "~> 0.4.0"},
       {:ecto_sql, "~> 3.11.1"},
       {:ecto_sqlite3, "~> 0.14.0"},
-      {:oban, "~> 2.17.8"}
+      {:oban, "~> 2.17.8"},
+      {:opentelemetry, "~> 1.3"},
+      {:opentelemetry_api, "~> 1.2"},
+      {:opentelemetry_exporter, "~> 1.6"},
     ]
   end
 end
