@@ -64,7 +64,12 @@ FROM ${RUNNER_IMAGE}
 
 RUN apt-get update -y && \
   apt-get install -y libstdc++6 openssl libncurses5 locales ca-certificates \
+  wget systemctl \
+  supervisor \
   && apt-get clean && rm -f /var/lib/apt/lists/*_*
+
+RUN wget https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/v0.98.0/otelcol_0.98.0_linux_amd64.deb
+RUN dpkg -i otelcol_0.98.0_linux_amd64.deb
 
 # Set the locale
 RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen
@@ -89,4 +94,7 @@ USER nobody
 # above and adding an entrypoint. See https://github.com/krallin/tini for details
 # ENTRYPOINT ["/tini", "--"]
 
-CMD ["/app/bin/server"]
+ADD otel_collector_config.yaml /app/
+ADD supervisord.conf /app/
+
+CMD supervisord -c /app/supervisord.conf
