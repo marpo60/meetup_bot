@@ -26,45 +26,63 @@ defmodule MeetupBot.Router do
   plug(:dispatch)
 
   get "/" do
-    Tracer.with_span("request") do
+    Tracer.with_span "meetup_bot.request.get" do
       send_resp(conn, 200, "Hello, World!")
     end
   end
 
   get "/auth/redirect" do
-    body = [
-      code: conn.params["code"],
-      client_id: System.fetch_env!("CLIENT_ID"),
-      client_secret: System.fetch_env!("CLIENT_SECRET"),
-      redirect_uri: System.fetch_env!("REDIRECT_URL")
-    ]
+    Tracer.with_span "meetup_bot.request.get" do
+      body = [
+        code: conn.params["code"],
+        client_id: System.fetch_env!("CLIENT_ID"),
+        client_secret: System.fetch_env!("CLIENT_SECRET"),
+        redirect_uri: System.fetch_env!("REDIRECT_URL")
+      ]
 
-    response = Req.post!("https://slack.com/api/oauth.access", form: body)
+      response = Req.post!("https://slack.com/api/oauth.access", form: body)
 
-    # Hacky way to get the webhooks
-    IO.inspect(response, label: "Response from OAuth")
+      # Hacky way to get the webhooks
+      IO.inspect(response, label: "Response from OAuth")
 
-    send_resp(conn, 200, "OK")
+      send_resp(conn, 200, "OK")
+    end
   end
 
   post "/" do
-    if Slack.slackbot?(conn) and Slack.verify_signature(conn) do
-      if conn.params["text"] == "list" do
-        meetups = MeetupCache.values()
-        text = Slack.build_text(meetups)
+    Tracer.with_span "meetup_bot.request.post" do
+      if Slack.slackbot?(conn) and Slack.verify_signature(conn) do
+        Tracer.with_span "slack.request" do
+          Tracer.set_attributes([
+            {:command, conn.params["text"]},
+            {:user_id, conn.params["user_id"]},
+            {:user_name, conn.params["user_name"]},
+            {:channel_id, conn.params["channel_id"]},
+            {:channel_name, conn.params["channel_name"]}
+          ])
 
-        conn
-        |> put_resp_content_type("application/json")
-        |> send_resp(200, text)
+          if conn.params["text"] == "list" do
+            meetups = MeetupCache.values()
+            text = Slack.build_text(meetups)
+
+            conn
+            |> put_resp_content_type("application/json")
+            |> send_resp(200, text)
+          else
+            Tracer.set_status(:error, "wrong command")
+
+            send_resp(conn, 200, "Comando incorrecto")
+          end
+        end
       else
-        send_resp(conn, 200, "Comando incorrecto")
+        send_resp(conn, 200, "200 OK")
       end
-    else
-      send_resp(conn, 200, "200 OK")
     end
   end
 
   match _ do
-    send_resp(conn, 404, ":(")
+    Tracer.with_span "meetup_bot.request" do
+      send_resp(conn, 404, ":(")
+    end
   end
 end
