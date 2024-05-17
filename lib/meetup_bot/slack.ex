@@ -14,25 +14,6 @@ defmodule MeetupBot.Slack do
     end
   end
 
-  def verify_signature(conn) do
-    signing_secret = System.fetch_env!("SIGNING_SECRET")
-    verify_signature(conn, signing_secret)
-  end
-
-  def verify_signature(conn, signing_secret) do
-    raw_body = conn.assigns[:raw_body]
-    [x_slack_signature] = Plug.Conn.get_req_header(conn, "x-slack-signature")
-    [x_slack_request_timestamp] = Plug.Conn.get_req_header(conn, "x-slack-request-timestamp")
-
-    to_sign = "v0:#{x_slack_request_timestamp}:#{raw_body}"
-
-    actual_signature =
-      :crypto.mac(:hmac, :sha256, signing_secret, to_sign)
-      |> Base.encode16(case: :lower)
-
-    x_slack_signature == "v0=#{actual_signature}"
-  end
-
   def build_text([]) do
     """
     {

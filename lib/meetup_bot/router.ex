@@ -43,7 +43,11 @@ defmodule MeetupBot.Router do
   end
 
   post "/" do
-    if Slack.slackbot?(conn) and Slack.verify_signature(conn) do
+    if Slack.slackbot?(conn) and
+         SlackRequest.valid_signature?(conn,
+           secret: System.fetch_env!("SIGNING_SECRET"),
+           body: conn.assigns[:raw_body]
+         ) do
       if conn.params["text"] == "list" do
         meetups = MeetupCache.values()
         text = Slack.build_text(meetups)
