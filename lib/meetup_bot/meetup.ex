@@ -25,7 +25,9 @@ defmodule MeetupBot.Meetup do
     "montevideo-leadership-development-meetup-group",
     "OWASP-Uruguay-Chapter",
     "react-native-uruguay",
-    "agileuy"
+    "agileuy",
+    "AWS-UG-Montevideo",
+    "AI-for-Devs-Montevideo"
   ]
 
   def fetch_upcoming_meetups() do
