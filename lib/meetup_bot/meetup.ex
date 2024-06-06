@@ -53,6 +53,7 @@ defmodule MeetupBot.Meetup do
               going
               waiting
               dateTime
+              endTime
               timezone
               eventUrl
             }
@@ -79,8 +80,11 @@ defmodule MeetupBot.Meetup do
     [
       %{
         "node" => %{
+          "id" => id,
           "eventUrl" => event_url,
-          "dateTime" => dt
+          "title" => title,
+          "dateTime" => dt,
+          "endTime" => edt
         }
       }
     ] = get_in(meetup, ["upcomingEvents", "edges"])
@@ -91,10 +95,18 @@ defmodule MeetupBot.Meetup do
       |> String.replace(~r/T(.*)-/, "T\\1:00-")
       |> NaiveDateTime.from_iso8601()
 
+    {:ok, edt} =
+      edt
+      |> String.replace(~r/T(.*)-/, "T\\1:00-")
+      |> NaiveDateTime.from_iso8601()
+
     %{
+      id: id,
       name: meetup["name"],
+      title: title,
       event_url: event_url,
-      datetime: dt
+      datetime: dt,
+      end_datetime: edt
     }
   end
 end

@@ -2,6 +2,7 @@ defmodule MeetupBot.Router do
   use Plug.Router
 
   alias MeetupBot.MeetupCache
+  alias MeetupBot.MeetupCalendar
   alias MeetupBot.Slack
 
   defmodule CacheBodyReader do
@@ -40,6 +41,15 @@ defmodule MeetupBot.Router do
     IO.inspect(response, label: "Response from OAuth")
 
     send_resp(conn, 200, "OK")
+  end
+
+  get "/calendar.ics" do
+    body = MeetupCache.values()
+           |> MeetupCalendar.to_ics()
+
+    conn
+    |> put_resp_content_type("text/calendar")
+    |> send_resp(200, body)
   end
 
   post "/" do
