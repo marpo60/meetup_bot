@@ -26,10 +26,15 @@ defmodule MeetupBot.MeetupCacheWorker do
 
   alias MeetupBot.MeetupCache
   alias MeetupBot.Meetup
+  alias MeetupBot.GDG
 
   @impl true
   def perform(%Oban.Job{}) do
-    Meetup.fetch_upcoming_meetups()
+    [
+      Meetup.fetch_upcoming_meetups() ++
+      GDG.fetch_live_events()
+    ]
+    |> Enum.sort_by(& &1.datetime, NaiveDateTime)
     |> MeetupCache.update()
 
     :ok
