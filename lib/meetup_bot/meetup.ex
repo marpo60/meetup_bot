@@ -27,7 +27,8 @@ defmodule MeetupBot.Meetup do
     "react-native-uruguay",
     "agileuy",
     "AWS-UG-Montevideo",
-    "AI-for-Devs-Montevideo"
+    "AI-for-Devs-Montevideo",
+    "abstractatechtalks"
   ]
 
   def fetch_upcoming_meetups() do
