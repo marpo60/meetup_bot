@@ -52,7 +52,14 @@ defmodule MeetupBot.Slack do
   end
 
   defp to_bullet_item(meetup) do
-    name = meetup.name |> String.replace("|> ", "")
-    "• #{Calendar.strftime(meetup.datetime, "%-d %B - %H:%M")} - <#{meetup.event_url}|#{name}>"
+    "• #{Calendar.strftime(meetup.datetime, "%-d %B - %H:%M")} - <#{meetup.event_url}|#{escaped_text(meetup.name)}>"
+  end
+
+  defp escaped_text(text) do
+    # https://api.slack.com/reference/surfaces/formatting#escaping
+    text
+    |> String.replace("&", "&amp;")
+    |> String.replace("<", "&lt;")
+    |> String.replace(">", "&gt;")
   end
 end
