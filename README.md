@@ -10,3 +10,20 @@
 <p align="center">
   <img src="img.png">
 </p>
+
+## Requirements
+
+* Elixir ~> 1.16
+
+## Development
+
+Steps to run the application in development
+
+1. Install dependencies `mix deps.get`
+2. Start application in development mode `iex -S mix`
+
+## Releasing
+
+Steps to release the application
+
+1. Run `mix release`

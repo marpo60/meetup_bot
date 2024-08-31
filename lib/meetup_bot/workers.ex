@@ -31,10 +31,11 @@ defmodule MeetupBot.MeetupCacheWorker do
   @impl true
   def perform(%Oban.Job{}) do
     [
-      Meetup.fetch_upcoming_meetups() ++
+      Meetup.fetch_upcoming_meetups(),
       GDG.fetch_live_events()
     ]
-    |> Enum.sort_by(& &1.datetime, NaiveDateTime)
+    |> List.flatten()
+    |> Enum.sort_by(& &1.datetime, DateTime)
     |> MeetupCache.update()
 
     :ok
