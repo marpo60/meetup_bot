@@ -8,19 +8,11 @@ defmodule MeetupBot.Router do
   alias MeetupBot.Slack
   alias OpenTelemetry.Tracer
 
-  defmodule CacheBodyReader do
-    def read_body(conn, opts) do
-      {:ok, body, conn} = Plug.Conn.read_body(conn, opts)
-      conn = update_in(conn.assigns[:raw_body], &[body | &1 || []])
-      {:ok, body, conn}
-    end
-  end
-
   plug(Plug.Logger)
 
   plug(Plug.Parsers,
     parsers: [:urlencoded],
-    body_reader: {CacheBodyReader, :read_body, []}
+    body_reader: {SlackRequest.BodyReader, :read_body, []}
   )
 
   plug(:match)
@@ -95,10 +87,7 @@ defmodule MeetupBot.Router do
   post "/" do
     Tracer.with_span "meetup_bot.request.post" do
       if Slack.slackbot?(conn) and
-         SlackRequest.valid_signature?(conn,
-           secret: System.fetch_env!("SIGNING_SECRET"),
-           body: conn.assigns[:raw_body]
-         ) do
+         SlackRequest.valid_signature?(conn, secret: System.fetch_env!("SIGNING_SECRET")) do
         Tracer.with_span "slack.request" do
           Tracer.set_attributes([
             {:command, conn.params["text"]},

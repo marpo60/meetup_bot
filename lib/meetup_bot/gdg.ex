@@ -1,13 +1,10 @@
 defmodule MeetupBot.GDG do
-  alias MeetupBot.Event
-
   def fetch_live_events() do
     response = Req.get!("https://gdg.community.dev/api/event", params: [chapter: 902, status: "Live"])
 
     response.body["results"]
     |> Enum.map(&process_response/1)
     |> Enum.filter(& &1)
-    |> Enum.sort_by(& &1.datetime, DateTime)
   end
 
   defp process_response(meetup) do
@@ -19,16 +16,16 @@ defmodule MeetupBot.GDG do
       "end_date" => edt
     } = meetup
 
-    {:ok, datetime, _} = DateTime.from_iso8601(dt)
-    {:ok, end_datetime, _} = DateTime.from_iso8601(edt)
+    {:ok, dt} = dt |> NaiveDateTime.from_iso8601()
+    {:ok, edt} = edt |> NaiveDateTime.from_iso8601()
 
-    %Event{
-      id: to_string(id),
+    %{
+      id: id,
       name: "GDG",
       title: title,
       event_url: event_url,
-      datetime: datetime,
-      end_datetime: end_datetime
+      datetime: dt,
+      end_datetime: edt
     }
   end
 end

@@ -1,6 +1,4 @@
 defmodule MeetupBot.Meetup do
-  alias MeetupBot.Event
-
   @meetup_names [
     "ember-montevideo",
     "ReactJS-Uruguay",
@@ -30,7 +28,8 @@ defmodule MeetupBot.Meetup do
     "agileuy",
     "AWS-UG-Montevideo",
     "AI-for-Devs-Montevideo",
-    "abstractatechtalks"
+    "abstractatechtalks",
+    "aws-girls-ug-uy"
   ]
 
   def fetch_upcoming_meetups() do
@@ -74,7 +73,7 @@ defmodule MeetupBot.Meetup do
     |> Map.values()
     |> Enum.map(&process_response/1)
     |> Enum.filter(& &1)
-    |> Enum.sort_by(& &1.datetime, DateTime)
+    |> Enum.sort_by(& &1.datetime, NaiveDateTime)
   end
 
   # Non existent meetup
@@ -96,17 +95,17 @@ defmodule MeetupBot.Meetup do
     ] = get_in(meetup, ["upcomingEvents", "edges"])
 
     # Revisit
-    {:ok, dt, _} =
+    {:ok, dt} =
       dt
       |> String.replace(~r/T(.*)-/, "T\\1:00-")
-      |> DateTime.from_iso8601()
+      |> NaiveDateTime.from_iso8601()
 
-    {:ok, edt, _} =
+    {:ok, edt} =
       edt
       |> String.replace(~r/T(.*)-/, "T\\1:00-")
-      |> DateTime.from_iso8601()
+      |> NaiveDateTime.from_iso8601()
 
-    %Event{
+    %{
       id: id,
       name: meetup["name"],
       title: title,
