@@ -5,7 +5,6 @@ defmodule MeetupBot.GDG do
     response.body["results"]
     |> Enum.map(&process_response/1)
     |> Enum.filter(& &1)
-    |> Enum.sort_by(& &1.datetime, NaiveDateTime)
   end
 
   defp process_response(meetup) do
@@ -16,6 +15,9 @@ defmodule MeetupBot.GDG do
       "start_date" => dt,
       "end_date" => edt
     } = meetup
+
+    {:ok, dt} = dt |> NaiveDateTime.from_iso8601()
+    {:ok, edt} = edt |> NaiveDateTime.from_iso8601()
 
     %{
       id: id,
