@@ -19,8 +19,39 @@ defmodule MeetupBot.Router do
   plug(:dispatch)
 
   get "/" do
+    import Plug.HTML, only: [html_escape: 1]
+
     Tracer.with_span "meetup_bot.request.get" do
-      send_resp(conn, 200, "Hello, World!")
+      layout = fn meetups ->
+        """
+        <title>OWU.UY - MeetupBot</title>
+        <h1>Próximos meetups</h1>
+        <ul>
+          #{meetups}
+        """
+      end
+
+      template = fn meetup ->
+        """
+        <li>
+          #{html_escape(Calendar.strftime(meetup.datetime, "%-d %B - %H:%M"))}
+          -
+          #{html_escape(meetup.name)} -&nbsp
+          <a href="#{meetup.event_url}">
+          #{html_escape(meetup.title)}
+          </a>
+        """
+      end
+
+      html =
+        MeetupCache.values()
+        |> Enum.map(fn m -> template.(m) end)
+        |> Enum.join()
+        |> layout.()
+
+      conn
+      |> put_resp_content_type("text/html")
+      |> send_resp(200, html)
     end
   end
 
@@ -43,12 +74,14 @@ defmodule MeetupBot.Router do
   end
 
   get "/calendar.ics" do
-    body = MeetupCache.values()
-           |> MeetupCalendar.to_ics()
+    Tracer.with_span "meetup_bot.request.get" do
+      body = MeetupCache.values()
+             |> MeetupCalendar.to_ics()
 
-    conn
-    |> put_resp_content_type("text/calendar")
-    |> send_resp(200, body)
+      conn
+      |> put_resp_content_type("text/calendar")
+      |> send_resp(200, body)
+    end
   end
 
   post "/" do
@@ -82,6 +115,16 @@ defmodule MeetupBot.Router do
       else
         send_resp(conn, 200, "200 OK")
       end
+    end
+  end
+
+  get "/json" do
+    Tracer.with_span "meetup_bot.request.get" do
+      meetups = MeetupCache.values()
+
+      conn
+      |> put_resp_content_type("application/json")
+      |> send_resp(200, Jason.encode!(%{meetups: meetups}))
     end
   end
 
