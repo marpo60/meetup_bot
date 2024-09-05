@@ -19,35 +19,24 @@ defmodule MeetupBot.Router do
   plug(:dispatch)
 
   get "/" do
-    import Plug.HTML, only: [html_escape: 1]
-
     Tracer.with_span "meetup_bot.request.get" do
-      layout = fn meetups ->
-        """
+      template = """
         <title>OWU.UY - MeetupBot</title>
         <h1>Próximos meetups</h1>
         <ul>
-          #{meetups}
-        """
-      end
+          <%= for meetup <- meetups do %>
+            <li>
+              <%= Calendar.strftime(meetup.datetime, "%-d %B - %H:%M") %> -
+              <%= meetup.name %>;
+              <a href="<%= meetup.event_url %>">
+                <%= meetup.title %>
+              </a>
+            </li>
+          <% end %>
+        </ul>
+      """
 
-      template = fn meetup ->
-        """
-        <li>
-          #{html_escape(Calendar.strftime(meetup.datetime, "%-d %B - %H:%M"))}
-          -
-          #{html_escape(meetup.name)} -&nbsp
-          <a href="#{meetup.event_url}">
-          #{html_escape(meetup.title)}
-          </a>
-        """
-      end
-
-      html =
-        MeetupCache.values()
-        |> Enum.map(fn m -> template.(m) end)
-        |> Enum.join()
-        |> layout.()
+      html = EEx.eval_string(template, meetups: MeetupCache.values())
 
       conn
       |> put_resp_content_type("text/html")
