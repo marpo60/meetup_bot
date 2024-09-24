@@ -33,7 +33,7 @@ defmodule MeetupBot.MixProject do
       {:bandit, "~> 1.5.7"},
       {:req, "~> 0.5.6"},
       {:ecto_sql, "~> 3.11.1"},
-      {:ecto_sqlite3, "~> 0.14.0"},
+      {:ecto_sqlite3, "~> 0.17.0"},
       {:slack_request, "~> 0.3.1"},
       {:oban, "~> 2.18.2"},
       {:tower, "~> 0.5.2"},
