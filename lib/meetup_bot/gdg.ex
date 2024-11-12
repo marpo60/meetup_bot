@@ -1,6 +1,9 @@
 defmodule MeetupBot.GDG do
   def fetch_live_events() do
-    response = Req.get!("https://gdg.community.dev/api/event", params: [chapter: 902, status: "Live"])
+    response =
+      Req.new(base_url: "https://gdg.community.dev")
+      |> OpentelemetryReq.attach(span_name: "meetup_bot.req")
+      |> Req.get!(url: "/api/event", params: [chapter: 902, status: "Live"])
 
     response.body["results"]
     |> Enum.map(&process_response/1)

@@ -39,9 +39,9 @@ defmodule MeetupBot.MixProject do
       {:tower_email, "~> 0.5.0"},
       {:opentelemetry, "~> 1.3"},
       {:opentelemetry_api, "~> 1.2"},
+      {:opentelemetry_bandit, "~> 0.2.0-a"},
       {:opentelemetry_exporter, "~> 1.6"},
-      {:opentelemetry_oban, "~> 1.0"},
-      {:opentelemetry_req, "~> 0.2.0"},
+      {:opentelemetry_req, "~> 1.0.0-beta.1"},
       {:opentelemetry_ecto, "~> 1.0"}
     ]
   end

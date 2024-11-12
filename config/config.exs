@@ -5,7 +5,7 @@ config :meetup_bot, ecto_repos: [MeetupBot.Repo]
 
 config :opentelemetry, sampler: {MeetupBot.Sampler, %{}}
 
-config :tower, :reporters,  [Tower.EphemeralReporter, TowerEmail.Reporter]
+config :tower, :reporters, [Tower.EphemeralReporter, TowerEmail.Reporter]
 config :swoosh, :api_client, Swoosh.ApiClient.Req
 
 config :tower_email,

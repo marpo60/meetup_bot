@@ -66,7 +66,7 @@ defmodule MeetupBot.Meetup do
 
     response =
       Req.new(base_url: "https://api.meetup.com")
-      |> OpentelemetryReq.attach(span_name: "meetup_bot.req", no_path_params: true)
+      |> OpentelemetryReq.attach(span_name: "meetup_bot.req")
       |> Req.post!(url: "/gql", json: %{query: query})
 
     response.body["data"]
