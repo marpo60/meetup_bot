@@ -8,6 +8,7 @@ defmodule MeetupBot.Application do
   @impl true
   def start(_type, _args) do
     OpentelemetryEcto.setup([:meetup_bot, :repo], db_statement: :enabled)
+    OpentelemetryBandit.setup()
 
     Tower.attach()
 
