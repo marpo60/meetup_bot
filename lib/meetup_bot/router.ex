@@ -59,8 +59,9 @@ defmodule MeetupBot.Router do
   end
 
   get "/calendar.ics" do
-    body = MeetupCache.values()
-            |> MeetupCalendar.to_ics()
+    body =
+      MeetupCache.values()
+      |> MeetupCalendar.to_ics()
 
     conn
     |> put_resp_content_type("text/calendar")
@@ -69,7 +70,7 @@ defmodule MeetupBot.Router do
 
   post "/" do
     if Slack.slackbot?(conn) and
-        SlackRequest.valid_request?(conn, secret: System.fetch_env!("SIGNING_SECRET")) do
+         SlackRequest.valid_request?(conn, secret: System.fetch_env!("SIGNING_SECRET")) do
       Tracer.with_span "slack.request" do
         Tracer.set_attributes([
           {:command, conn.params["text"]},
