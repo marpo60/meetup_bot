@@ -7,8 +7,7 @@ defmodule MeetupBot.Sampler do
     %{}
   end
 
-
-# meetup_bot.repo.query:oban_jobs
+  # meetup_bot.repo.query:oban_jobs
   def description(_) do
     "MeetupBotSampler"
   end
@@ -21,7 +20,8 @@ defmodule MeetupBot.Sampler do
         _span_kind,
         %{"oban.plugin": o},
         _config_attributes
-      ) when o in [Oban.Stager, Oban.Plugins.Pruner, Oban.Plugins.Cron] do
+      )
+      when o in [Oban.Stager, Oban.Plugins.Pruner, Oban.Plugins.Cron] do
     {:drop, [], []}
   end
 
@@ -45,7 +45,8 @@ defmodule MeetupBot.Sampler do
         _span_kind,
         %{"db.statement": s},
         _config_attributes
-      ) when s in ["begin", "commit"] do
+      )
+      when s in ["begin", "commit"] do
     {:drop, [], []}
   end
 

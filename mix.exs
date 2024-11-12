@@ -40,7 +40,6 @@ defmodule MeetupBot.MixProject do
       {:opentelemetry, "~> 1.3"},
       {:opentelemetry_api, "~> 1.2"},
       {:opentelemetry_exporter, "~> 1.6"},
-      {:opentelemetry_oban, "~> 1.0"},
       {:opentelemetry_req, "~> 0.2.0"},
       {:opentelemetry_ecto, "~> 1.0"}
     ]
