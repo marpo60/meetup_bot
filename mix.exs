@@ -30,7 +30,7 @@ defmodule MeetupBot.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:bandit, "~> 1.5.7"},
+      {:bandit, "~> 1.6.0"},
       {:req, "~> 0.5.6"},
       {:ecto_sql, "~> 3.12.0"},
       {:ecto_sqlite3, "~> 0.17.2"},
