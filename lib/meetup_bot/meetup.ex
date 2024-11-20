@@ -29,7 +29,9 @@ defmodule MeetupBot.Meetup do
     "AWS-UG-Montevideo",
     "AI-for-Devs-Montevideo",
     "abstractatechtalks",
-    "aws-girls-ug-uy"
+    "aws-girls-ug-uy",
+    "tryolabs-tech-talks",
+    "fintech-dev-uruguay"
   ]
 
   def fetch_upcoming_meetups() do
