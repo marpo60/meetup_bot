@@ -31,7 +31,8 @@ defmodule MeetupBot.Meetup do
     "abstractatechtalks",
     "aws-girls-ug-uy",
     "tryolabs-tech-talks",
-    "fintech-dev-uruguay"
+    "fintech-dev-uruguay",
+    "flutter-montevideo"
   ]
 
   def fetch_upcoming_meetups() do
