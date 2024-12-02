@@ -24,6 +24,7 @@ defmodule MeetupBot.Application do
          {Oban.Plugins.Cron,
           crontab: [
             {"@hourly", MeetupBot.MeetupCacheWorker},
+            {"0 8 * * *", MeetupBot.BackupDatabase},
             {MeetupBot.PostToSlackWorker.cron(), MeetupBot.PostToSlackWorker}
           ]},
          {Oban.Plugins.Pruner, max_age: 300_000}

@@ -66,6 +66,7 @@ RUN apt-get update -y && \
   apt-get install -y libstdc++6 openssl libncurses5 locales ca-certificates \
   wget systemctl \
   supervisor \
+  sqlite3 \
   && apt-get clean && rm -f /var/lib/apt/lists/*_*
 
 RUN wget https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/v0.98.0/otelcol_0.98.0_linux_amd64.deb
