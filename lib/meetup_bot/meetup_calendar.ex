@@ -26,7 +26,7 @@ defmodule MeetupBot.MeetupCalendar do
     DTEND;TZID=America/Montevideo:#{format_datetime(meetup.end_datetime)}
     SUMMARY:#{meetup.title}
     DESCRIPTION:#{meetup.event_url}
-    UID:#{meetup.id}@meetup_bot.local
+    UID:#{meetup.source_id}@meetup_bot.local
     END:VEVENT
     """
   end

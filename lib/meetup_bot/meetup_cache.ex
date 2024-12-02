@@ -1,15 +1,35 @@
 defmodule MeetupBot.MeetupCache do
-  use Agent
+  alias MeetupBot.Event
+  alias MeetupBot.Repo
 
-  def start_link(_) do
-    Agent.start_link(fn -> [] end, name: __MODULE__)
-  end
+  import Ecto.Query
 
   def values do
-    Agent.get(__MODULE__, & &1)
+    now = DateTime.now!("America/Montevideo")
+    next_month = DateTime.shift(now, month: 1)
+
+    Event
+    |> where([e], e.datetime > ^now)
+    |> where([e], e.datetime < ^next_month)
+    |> order_by([e], e.datetime)
+    |> Repo.all()
   end
 
-  def update(meetups) do
-    Agent.update(__MODULE__, fn _state -> meetups end)
+  def all do
+    Event
+    |> order_by([e], e.datetime)
+    |> Repo.all()
+  end
+
+  def update(events) do
+    events
+    |> Enum.each(fn e ->
+      case Repo.get_by(Event, %{source: e.source, source_id: e.source_id}) do
+        nil -> %Event{}
+        event -> event
+      end
+      |> Event.changeset(e)
+      |> Repo.insert_or_update()
+    end)
   end
 end

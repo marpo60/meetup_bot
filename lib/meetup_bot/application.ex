@@ -15,7 +15,6 @@ defmodule MeetupBot.Application do
     MeetupBot.Release.migrate()
 
     children = [
-      MeetupBot.MeetupCache,
       {Bandit, plug: MeetupBot.Router, scheme: :http, port: 4000},
       MeetupBot.Repo,
       {Oban,
@@ -24,7 +23,6 @@ defmodule MeetupBot.Application do
        plugins: [
          {Oban.Plugins.Cron,
           crontab: [
-            {"@reboot", MeetupBot.MeetupCacheWorker},
             {"@hourly", MeetupBot.MeetupCacheWorker},
             {MeetupBot.PostToSlackWorker.cron(), MeetupBot.PostToSlackWorker}
           ]},

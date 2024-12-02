@@ -42,14 +42,8 @@ defmodule MeetupBot.MeetupCacheWorker do
   def perform(%Oban.Job{}) do
     Tracer.with_span "oban.perform" do
       Tracer.set_attributes([{:worker, "MeetupCacheWorker"}])
-      # Revisit
-      datetime_limit =
-        NaiveDateTime.local_now()
-        |> NaiveDateTime.add(30 * 24 * 60 * 60, :second)
 
       (Meetup.fetch_upcoming_meetups() ++ GDG.fetch_live_events())
-      |> Enum.filter(&(NaiveDateTime.compare(&1.datetime, datetime_limit) == :lt))
-      |> Enum.sort_by(& &1.datetime, NaiveDateTime)
       |> MeetupCache.update()
 
       :ok

@@ -76,7 +76,6 @@ defmodule MeetupBot.Meetup do
     |> Map.values()
     |> Enum.map(&process_response/1)
     |> Enum.filter(& &1)
-    |> Enum.sort_by(& &1.datetime, NaiveDateTime)
   end
 
   # Non existent meetup
@@ -109,7 +108,8 @@ defmodule MeetupBot.Meetup do
       |> NaiveDateTime.from_iso8601()
 
     %{
-      id: id,
+      source: "meetup",
+      source_id: id,
       name: meetup["name"],
       title: title,
       event_url: event_url,

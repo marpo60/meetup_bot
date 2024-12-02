@@ -26,4 +26,6 @@ meetup_bot-*.tar
 /tmp/
 
 # Database
-database.*
+*.db
+*.db-*
+*.backup.gz
