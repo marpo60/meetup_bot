@@ -1,4 +1,4 @@
-defmodule MeetupBot.BackupDatabase do
+defmodule MeetupBot.BackupDatabaseWorker do
   use Oban.Worker
 
   require OpenTelemetry.Tracer
