@@ -7,12 +7,10 @@ kill_timeout = "5s"
 
 [build]
 
-[deploy]
-  release_command = '/app/bin/migrate'
-
 [env]
   PORT = "8080"
   PRIMARY_REGION = "mia"
+  DATABASE_PATH = "/mnt/storage/database.db"
 
 [[services]]
   protocol = "tcp"
@@ -41,3 +39,7 @@ kill_timeout = "5s"
   cpu_kind = "shared"
   cpus = 1
   memory_mb = 512
+
+[mounts]
+  source="storage"
+  destination="/mnt/storage"

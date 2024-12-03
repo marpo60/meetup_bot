@@ -23,7 +23,8 @@ defmodule MeetupBot.GDG do
     {:ok, edt} = edt |> NaiveDateTime.from_iso8601()
 
     %{
-      id: id,
+      source: "GDG",
+      source_id: id |> to_string,
       name: "GDG",
       title: title,
       event_url: event_url,
