@@ -35,6 +35,16 @@ defmodule MeetupBot.Meetup do
     "flutter-montevideo"
   ]
 
+  defmodule Host do
+    @callback connect_url() :: String.t()
+  end
+
+  defmodule ProdHost do
+    @behaviour Host
+
+    def connect_url, do: "https://api.meetup.com"
+  end
+
   def fetch_upcoming_meetups() do
     q =
       @meetup_names
@@ -68,7 +78,7 @@ defmodule MeetupBot.Meetup do
     """
 
     response =
-      Req.new(base_url: "https://api.meetup.com")
+      Req.new(base_url: host().connect_url())
       |> OpentelemetryReq.attach(span_name: "meetup_bot.req")
       |> Req.post!(url: "/gql", json: %{query: query})
 
@@ -117,4 +127,7 @@ defmodule MeetupBot.Meetup do
       end_datetime: edt
     }
   end
+
+  defp host, do: Keyword.fetch!(config(), :host)
+  defp config, do: Application.fetch_env!(:meetup_bot, :meetup)
 end
