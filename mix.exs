@@ -43,7 +43,9 @@ defmodule MeetupBot.MixProject do
       {:opentelemetry_bandit, "~> 0.2.0-a"},
       {:opentelemetry_exporter, "~> 1.6"},
       {:opentelemetry_req, "~> 1.0.0-beta.1"},
-      {:opentelemetry_ecto, "~> 1.0"}
+      {:opentelemetry_ecto, "~> 1.0"},
+      {:bypass, "~> 2.1", only: :test},
+      {:mox, "~> 1.0", only: :test}
     ]
   end
 end

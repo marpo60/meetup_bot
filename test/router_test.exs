@@ -6,9 +6,14 @@ defmodule MeetupBot.RouterTest do
   alias MeetupBot.Repo
   alias MeetupBot.Event
 
-  test "GET /json returns meetups as JSON" do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(MeetupBot.Repo)
+  setup tags do
+    pid = Ecto.Adapters.SQL.Sandbox.start_owner!(MeetupBot.Repo, shared: not tags[:async])
+    on_exit(fn -> Ecto.Adapters.SQL.Sandbox.stop_owner(pid) end)
 
+    :ok
+  end
+
+  test "GET /json returns meetups as JSON" do
     %Event{
       name: "Name",
       title: "Title",
