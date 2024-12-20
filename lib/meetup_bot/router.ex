@@ -7,6 +7,8 @@ defmodule MeetupBot.Router do
   alias MeetupBot.MeetupCalendar
   alias MeetupBot.Slack
   alias OpenTelemetry.Tracer
+  alias MeetupBot.Repo
+  alias MeetupBot.Event
 
   plug(Plug.Logger)
 
@@ -101,7 +103,7 @@ defmodule MeetupBot.Router do
   end
 
   get "/json" do
-    meetups = MeetupCache.values()
+    meetups = Repo.all(Event)
 
     conn
     |> put_resp_content_type("application/json")
