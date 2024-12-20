@@ -32,4 +32,15 @@ defmodule MeetupBot.MeetupCache do
       |> Repo.insert_or_update()
     end)
   end
+
+  def sync_manual(events) do
+    update(events)
+
+    ids = Enum.map(events, &(&1.source_id))
+
+    Event
+    |> where([e], e.source == "manual")
+    |> where([e], e.source_id not in ^ids)
+    |> Repo.delete_all
+  end
 end

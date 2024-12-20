@@ -1,5 +1,5 @@
 defmodule MeetupBot.MeetupCacheWorkerTest do
-  use ExUnit.Case, async: true
+  use ExUnit.Case, async: false
 
   alias MeetupBot.MeetupCache
   alias MeetupBot.MeetupCacheWorker

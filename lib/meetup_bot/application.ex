@@ -23,6 +23,7 @@ defmodule MeetupBot.Application do
        plugins: [
          {Oban.Plugins.Cron,
           crontab: [
+            {"@reboot", MeetupBot.SyncManualEventsWorker},
             {"@hourly", MeetupBot.MeetupCacheWorker},
             {"0 8 * * *", MeetupBot.BackupDatabaseWorker},
             {MeetupBot.PostToSlackWorker.cron(), MeetupBot.PostToSlackWorker}
