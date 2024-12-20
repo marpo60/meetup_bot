@@ -18,8 +18,8 @@ defmodule MeetupBot.SyncManualEventsWorkerTest do
 
     assert [meetup] = MeetupCache.all()
 
-    assert meetup.source_id == "1"
-    assert meetup.name == "OWU Code Pop"
+    assert meetup.source_id == "0"
+    assert meetup.name == "Name"
   end
 
   test "delete manual meetups not present in the hardcoaded list", %{} do
@@ -34,7 +34,7 @@ defmodule MeetupBot.SyncManualEventsWorkerTest do
 
     assert [meetup] = MeetupCache.all()
 
-    assert meetup.source_id == "1"
-    assert meetup.name == "OWU Code Pop"
+    assert meetup.source_id == "0"
+    assert meetup.name == "Name"
   end
 end

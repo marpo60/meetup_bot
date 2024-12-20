@@ -23,12 +23,12 @@ defmodule MeetupBot.SyncManualEventsWorker do
     [
       %{
         source: "manual",
-        source_id: "1",
-        name: "OWU Code Pop",
-        title: "OWU Code Pop",
-        event_url: "http://example.com",
-        datetime: ~N[2025-04-05 09:00:00],
-        end_datetime: ~N[2025-04-05 18:00:00]
+        source_id: "0",
+        name: "Name",
+        title: "Title",
+        event_url: "https://example.com",
+        datetime: ~N[2020-01-01 18:00:00],
+        end_datetime: ~N[2020-01-01 19:00:00]
       }
     ]
   end
