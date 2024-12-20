@@ -26,7 +26,7 @@ defmodule MeetupBot.SyncManualEventsWorker do
         source_id: "1",
         name: "OWU Code Pop",
         title: "OWU Code Pop",
-        event_url: "https://codepop.owu.uy/",
+        event_url: "http://example.com",
         datetime: ~N[2025-04-05 09:00:00],
         end_datetime: ~N[2025-04-05 18:00:00]
       }
