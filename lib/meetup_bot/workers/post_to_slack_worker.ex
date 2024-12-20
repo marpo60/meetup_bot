@@ -26,4 +26,3 @@ defmodule MeetupBot.PostToSlackWorker do
     end
   end
 end
-

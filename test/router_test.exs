@@ -17,7 +17,8 @@ defmodule MeetupBot.RouterTest do
       event_url: "https://example.com/event",
       source: "meetup",
       source_id: "123"
-    } |> Repo.insert!()
+    }
+    |> Repo.insert!()
 
     conn = conn(:get, "/json") |> Router.call([])
 
@@ -25,11 +26,11 @@ defmodule MeetupBot.RouterTest do
     assert %{"meetups" => [meetup]} = response
 
     assert meetup == %{
-      "name" => "Name",
-      "datetime" => "2024-01-01T19:00:00",
-      "end_datetime" => "2024-01-01T20:00:00",
-      "event_url" => "https://example.com/event",
-      "title" => "Title"
-    }
+             "name" => "Name",
+             "datetime" => "2024-01-01T19:00:00",
+             "end_datetime" => "2024-01-01T20:00:00",
+             "event_url" => "https://example.com/event",
+             "title" => "Title"
+           }
   end
 end
