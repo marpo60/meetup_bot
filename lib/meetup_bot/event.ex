@@ -2,7 +2,7 @@ defmodule MeetupBot.Event do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @derive {Jason.Encoder, only: [:name, :title, :datetime, :end_datetime, :event_url]}
+  @derive {Jason.Encoder, only: [:id, :name, :title, :datetime, :end_datetime, :event_url]}
 
   schema "events" do
     field(:name, :string)
