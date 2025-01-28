@@ -4,8 +4,6 @@ defmodule MeetupBot.SyncManualEventsWorker do
   require OpenTelemetry.Tracer
 
   alias MeetupBot.MeetupCache
-  alias MeetupBot.Meetup
-  alias MeetupBot.GDG
   alias OpenTelemetry.Tracer
 
   @impl true
