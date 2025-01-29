@@ -22,7 +22,7 @@ defmodule SlackTest do
         },
         {
           "type": "section",
-          "text": {"type": "mrkdwn", "text": "• 28 March - 22:00 - <http://example.com|Elixir |&gt; Meetup>"}
+          "text": {"type": "mrkdwn", "text": "• Thu, 28 March - 22:00 - <http://example.com|Elixir |&gt; Meetup>"}
         }
       ]
     }
