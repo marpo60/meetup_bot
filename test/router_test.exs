@@ -14,16 +14,21 @@ defmodule MeetupBot.RouterTest do
   end
 
   test "GET /json returns meetups as JSON" do
-    %Event{
-      name: "Name",
-      title: "Title",
-      datetime: ~N[2024-01-01 19:00:00],
-      end_datetime: ~N[2024-01-01 20:00:00],
-      event_url: "https://example.com/event",
-      source: "meetup",
-      source_id: "123"
-    }
-    |> Repo.insert!()
+    date = Date.utc_today() |> Date.add(2)
+    datetime = NaiveDateTime.new!(date, ~T[19:00:00])
+    end_datetime = NaiveDateTime.new!(date, ~T[20:00:00])
+
+    e =
+      %Event{
+        name: "Name",
+        title: "Title",
+        datetime: datetime,
+        end_datetime: end_datetime,
+        event_url: "https://example.com/event",
+        source: "meetup",
+        source_id: "123"
+      }
+      |> Repo.insert!()
 
     conn = conn(:get, "/json") |> Router.call([])
 
@@ -31,9 +36,10 @@ defmodule MeetupBot.RouterTest do
     assert %{"meetups" => [meetup]} = response
 
     assert meetup == %{
+             "id" => e.id,
              "name" => "Name",
-             "datetime" => "2024-01-01T19:00:00",
-             "end_datetime" => "2024-01-01T20:00:00",
+             "datetime" => NaiveDateTime.to_iso8601(datetime),
+             "end_datetime" => NaiveDateTime.to_iso8601(end_datetime),
              "event_url" => "https://example.com/event",
              "title" => "Title"
            }
