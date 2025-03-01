@@ -25,8 +25,8 @@ defmodule MeetupBot.SyncManualEventsWorker do
         name: "MujeresIT",
         title: "Conversatorio de Mujeres Online - Previa del 8M",
         event_url: “https://us06web.zoom.us/meeting/register/OE6XscvQTYyx50TIVgKrXw ”,
-        datetime: ~N[2025-03-07 19:00:00],
-        end_datetime: ~N[2025-03-07 21:00:00]
+        datetime: ~N[2025-03-07 18:30:00],
+        end_datetime: ~N[2025-03-07 20:00:00]
       }
     ]
   end
