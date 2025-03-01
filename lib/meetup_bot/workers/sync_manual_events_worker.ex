@@ -21,12 +21,12 @@ defmodule MeetupBot.SyncManualEventsWorker do
     [
       %{
         source: "manual",
-        source_id: "0",
-        name: "Name",
-        title: "Title",
-        event_url: "https://example.com",
-        datetime: ~N[2020-01-01 18:00:00],
-        end_datetime: ~N[2020-01-01 19:00:00]
+        source_id: "1",
+        name: "MujeresIT",
+        title: "Conversatorio de Mujeres Online - Previa del 8M",
+        event_url: “https://us06web.zoom.us/meeting/register/OE6XscvQTYyx50TIVgKrXw ”,
+        datetime: ~N[2025-03-07 19:00:00],
+        end_datetime: ~N[2025-03-07 21:00:00]
       }
     ]
   end
