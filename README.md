@@ -8,7 +8,7 @@
 <h4 align="center">Publish upcoming meetups to Slack</h4>
 
 <p align="center">
-  <img src="img.png">
+  <img src="proximos-meetups.jpg">
 </p>
 
 ## Requirements
