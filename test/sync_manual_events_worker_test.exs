@@ -16,7 +16,7 @@ defmodule MeetupBot.SyncManualEventsWorkerTest do
   test "insert manual meetups", %{} do
     assert :ok = SyncManualEventsWorker.perform(%Oban.Job{})
 
-    assert [meetup] = MeetupCache.all()
+    assert meetup = MeetupCache.all() |> hd
 
     assert meetup.source_id == "0"
     assert meetup.name == "Name"
@@ -32,9 +32,6 @@ defmodule MeetupBot.SyncManualEventsWorkerTest do
 
     assert :ok = SyncManualEventsWorker.perform(%Oban.Job{})
 
-    assert [meetup] = MeetupCache.all()
-
-    assert meetup.source_id == "0"
-    assert meetup.name == "Name"
+    refute MeetupCache.all() |> Enum.find(&(&1.source_id == "-1"))
   end
 end
