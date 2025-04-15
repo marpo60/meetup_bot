@@ -1,6 +1,7 @@
 defmodule MeetupBot.Router do
   use Plug.Router
 
+  require Logger
   require OpenTelemetry.Tracer
 
   alias MeetupBot.MeetupCache
@@ -52,8 +53,8 @@ defmodule MeetupBot.Router do
 
     response = Req.post!("https://slack.com/api/oauth.access", form: body)
 
-    # Hacky way to get the webhooks
-    IO.inspect(response, label: "Response from OAuth")
+    # Hacky way to get the webhooks via Tower
+    Logger.critical(response, label: "Response from OAuth")
 
     send_resp(conn, 200, "OK")
   end
