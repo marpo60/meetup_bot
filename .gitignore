@@ -29,3 +29,5 @@ meetup_bot-*.tar
 *.db
 *.db-*
 *.backup.gz
+
+.elixir_ls/*

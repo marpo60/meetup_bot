@@ -3,10 +3,9 @@ defmodule MeetupBot.MeetupCacheWorkerTest do
 
   alias MeetupBot.MeetupCache
   alias MeetupBot.MeetupCacheWorker
-  alias MeetupBot.Repo
-  alias MeetupBot.Event
 
-  import Helpers
+  import TestDateHelpers
+  import ApiStubHelpers
 
   setup tags do
     pid = Ecto.Adapters.SQL.Sandbox.start_owner!(MeetupBot.Repo, shared: not tags[:async])
@@ -15,51 +14,16 @@ defmodule MeetupBot.MeetupCacheWorkerTest do
     :ok
   end
 
-  test "perform/1 stores new meetups", %{} do
-    Bypass.expect(bypass_meetup(), "POST", "/gql", fn conn ->
-      conn
-      |> Plug.Conn.put_resp_content_type("application/json")
-      |> Plug.Conn.resp(200, """
-      {
-        "data": {
-          "g0": {
-            "name": "Elixir Meetup",
-            "upcomingEvents": {
-              "edges": [
-                {
-                  "node": {
-                    "id": "123",
-                    "title": "Testing with ExUnit",
-                    "eventUrl": "http://example.com",
-                    "dateTime": "2024-03-28T22:00-03:00",
-                    "endTime": "2024-03-28T23:00-03:00"
-                  }
-                }
-              ]
-            }
-          }
-        }
+  test "perform/1 fetches and stores new meetup events" do
+    stub_meetup_response([
+      %{
+        id: "123",
+        title: "Testing with ExUnit",
+        eventUrl: "http://example.com",
+        dateTime: tomorrow(),
+        endTime: day_after_tomorrow()
       }
-      """)
-    end)
-
-    Bypass.expect(bypass_gdg(), "GET", "/api/event", fn conn ->
-      conn
-      |> Plug.Conn.put_resp_content_type("application/json")
-      |> Plug.Conn.resp(200, """
-      {
-        "results": [
-          {
-            "id": 456,
-            "title": "Google Cloud Platform",
-            "url": "http://gdg.example.com",
-            "start_date": "2024-03-29T19:00:00",
-            "end_date": "2024-03-29T21:00:00"
-          }
-        ]
-      }
-      """)
-    end)
+    ])
 
     Bypass.expect(bypass_luma(), "GET", "/calendar/get-items", fn conn ->
       conn

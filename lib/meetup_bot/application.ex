@@ -25,6 +25,7 @@ defmodule MeetupBot.Application do
           crontab: [
             {"@reboot", MeetupBot.SyncManualEventsWorker},
             {"@hourly", MeetupBot.MeetupCacheWorker},
+            {"@hourly", MeetupBot.GDGCacheWorker},
             {"0 8 * * *", MeetupBot.BackupDatabaseWorker},
             {MeetupBot.PostToSlackWorker.cron(), MeetupBot.PostToSlackWorker}
           ]},
