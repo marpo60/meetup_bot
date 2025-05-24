@@ -11,7 +11,7 @@ defmodule MeetupBot.SyncManualEventsWorker do
     Tracer.with_span "oban.perform" do
       Tracer.set_attributes([{:worker, "SyncManualEventsWorker"}])
 
-      MeetupCache.sync_manual(events())
+      MeetupCache.sync_manual_events(events())
 
       :ok
     end

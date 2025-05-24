@@ -22,7 +22,7 @@ defmodule MeetupBot.SyncManualEventsWorkerTest do
     assert meetup.name == "Name"
   end
 
-  test "delete manual meetups not present in the hardcoaded list", %{} do
+  test "delete manual meetups not present in the hardcoded list", %{} do
     %Event{
       source: "manual",
       source_id: "-1",
