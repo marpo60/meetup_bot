@@ -19,7 +19,6 @@ defmodule MeetupBot.Luma do
     response =
       Req.get!(api_url)
       |> Map.fetch!(:body)
-      |> Jason.decode!()
 
     response["featured_items"]
     |> Enum.map(& &1["event"])
