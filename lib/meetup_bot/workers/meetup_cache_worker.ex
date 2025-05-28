@@ -6,6 +6,7 @@ defmodule MeetupBot.MeetupCacheWorker do
   alias MeetupBot.MeetupCache
   alias MeetupBot.Meetup
   alias MeetupBot.GDG
+  alias MeetupBot.Luma
   alias OpenTelemetry.Tracer
 
   @impl true
