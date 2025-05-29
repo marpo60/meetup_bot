@@ -1,30 +1,43 @@
 defmodule MeetupBot.Luma do
-  @moduledoc """
-  Fetches upcoming events from the Luma calendar API and filters for events in Uruguay.
-  """
+  defmodule Host do
+    @callback connect_url() :: String.t()
+  end
+
+  defmodule ProdHost do
+    @behaviour Host
+
+    def connect_url, do: "https://api.lu.ma"
+  end
 
   @calendar_ids [
-    "cal-61Cv6COs4g9GKw7" # Cursor Community
+    # Cursor Community
+    "cal-61Cv6COs4g9GKw7"
     # Add more calendar ids here, e.g. "cal-XXXXXXX" # Calendar Name
   ]
 
-  def fetch_uruguay_events do
+  def fetch_upcoming_meetups do
     @calendar_ids
-    |> Enum.flat_map(&fetch_uruguay_events_from_calendar/1)
+    |> Enum.flat_map(&fetch_upcoming_events_from_calendar/1)
   end
 
-  defp fetch_uruguay_events_from_calendar(calendar_id) do
-    api_url = "https://api.lu.ma/calendar/get?api_id=" <> calendar_id
-
+  defp fetch_upcoming_events_from_calendar(calendar_id) do
     response =
-      Req.get!(api_url)
-      |> Map.fetch!(:body)
+      Req.new(base_url: host().connect_url())
+      |> OpentelemetryReq.attach(span_name: "meetup_bot.req")
+      |> Req.get!(
+        url: "/calendar/get-items",
+        params: [
+          calendar_api_id: calendar_id,
+          period: "future",
+          pagination_limit: 20
+        ]
+      )
 
-    response["featured_items"]
-    |> Enum.map(& &1["event"])
+    response.body["entries"]
     |> Enum.filter(fn event ->
-      get_in(event, ["geo_address_info", "country"]) == "Uruguay"
+      get_in(event, ["event", "geo_address_info", "country"]) == "Uruguay"
     end)
+    |> Enum.map(& &1["event"])
     |> Enum.map(&process_event/1)
   end
 
@@ -42,4 +55,7 @@ defmodule MeetupBot.Luma do
       end_datetime: DateTime.to_naive(end_dt)
     }
   end
+
+  defp host, do: Keyword.fetch!(config(), :host)
+  defp config, do: Application.fetch_env!(:meetup_bot, :luma)
 end
