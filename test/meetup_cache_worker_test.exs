@@ -61,15 +61,45 @@ defmodule MeetupBot.MeetupCacheWorkerTest do
       """)
     end)
 
+    Bypass.expect(bypass_luma(), "GET", "/calendar/get-items", fn conn ->
+      conn
+      |> Plug.Conn.put_resp_content_type("application/json")
+      |> Plug.Conn.resp(200, """
+      {
+        "entries": [
+          {
+            "event": {
+              "api_id": "evt-NMjOHfvjTdslSoG",
+              "name": "Cursor Meetup Montevideo",
+              "start_at": "2025-06-05T21:30:00.000Z",
+              "end_at": "2025-06-05T23:30:00.000Z",
+              "timezone": "America/Montevideo",
+              "url": "xyt8mntx ",
+              "geo_address_info": {
+                "country": "Uruguay"
+              }
+            }
+          }
+        ]
+      }
+      """)
+    end)
+
     assert :ok = MeetupCacheWorker.perform(%Oban.Job{})
 
-    assert [meetup, gdg] = MeetupCache.all()
+    assert [meetup, gdg, luma] = MeetupCache.all()
 
     assert meetup.source_id == "123"
+    assert meetup.source == "meetup"
     assert meetup.name == "Elixir Meetup"
 
     assert gdg.source_id == "456"
+    assert gdg.source == "GDG"
     assert gdg.name == "GDG"
+
+    assert luma.source_id == "evt-NMjOHfvjTdslSoG"
+    assert luma.source == "luma"
+    assert luma.name == "Cursor Meetup Montevideo"
   end
 
   test "perform/1 update existings meetups", %{} do
@@ -84,6 +114,13 @@ defmodule MeetupBot.MeetupCacheWorkerTest do
       source: "GDG",
       source_id: "456",
       datetime: ~N[2024-03-30 19:00:00]
+    }
+    |> Repo.insert!()
+
+    %Event{
+      source: "luma",
+      source_id: "evt-NMjOHfvjTdslSoG",
+      datetime: ~N[2024-04-05 19:00:00]
     }
     |> Repo.insert!()
 
@@ -132,10 +169,35 @@ defmodule MeetupBot.MeetupCacheWorkerTest do
       """)
     end)
 
+    Bypass.expect(bypass_luma(), "GET", "/calendar/get-items", fn conn ->
+      conn
+      |> Plug.Conn.put_resp_content_type("application/json")
+      |> Plug.Conn.resp(200, """
+      {
+        "entries": [
+          {
+            "event": {
+              "api_id": "evt-NMjOHfvjTdslSoG",
+              "name": "Cursor Meetup Montevideo",
+              "start_at": "2024-04-07T19:00:00.000Z",
+              "end_at": "2024-04-07T23:30:00.000Z",
+              "timezone": "America/Montevideo",
+              "url": "xyt8mntx ",
+              "geo_address_info": {
+                "country": "Uruguay"
+              }
+            }
+          }
+        ]
+      }
+      """)
+    end)
+
     assert :ok = MeetupCacheWorker.perform(%Oban.Job{})
 
-    [meetup, gdg] = MeetupCache.all()
+    [meetup, gdg, luma] = MeetupCache.all()
     assert meetup.datetime == ~N[2024-03-29 19:00:00]
     assert gdg.datetime == ~N[2024-03-31 19:00:00]
+    assert luma.datetime == ~N[2024-04-07 19:00:00]
   end
 end
