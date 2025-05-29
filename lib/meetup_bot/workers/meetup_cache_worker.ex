@@ -6,6 +6,7 @@ defmodule MeetupBot.MeetupCacheWorker do
   alias MeetupBot.MeetupCache
   alias MeetupBot.Meetup
   alias MeetupBot.GDG
+  alias MeetupBot.Luma
   alias OpenTelemetry.Tracer
 
   @impl true
@@ -13,7 +14,9 @@ defmodule MeetupBot.MeetupCacheWorker do
     Tracer.with_span "oban.perform" do
       Tracer.set_attributes([{:worker, "MeetupCacheWorker"}])
 
-      (Meetup.fetch_upcoming_meetups() ++ GDG.fetch_live_events())
+      (Meetup.fetch_upcoming_meetups() ++
+         GDG.fetch_live_events() ++
+         Luma.fetch_upcoming_meetups())
       |> MeetupCache.update()
 
       :ok
