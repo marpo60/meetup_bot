@@ -11,7 +11,6 @@ defmodule MeetupBot.GDG do
 
   alias MeetupBot.Event
 
-
   def fetch_live_events() do
     response =
       Req.new(base_url: host().connect_url())

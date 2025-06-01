@@ -17,17 +17,18 @@ defmodule MeetupBot.MeetupCacheTest do
   describe "update_or_create/1" do
     test "creates a new event with all given attributes when it didn't previously exist" do
       # Use all the available sources
-      events = for source <- Event.sources() do
-        %{
-          source: source,
-          source_id: "123",
-          name: "Elixir Meetup",
-          title: "Testing with ExUnit",
-          event_url: "http://example.com",
-          datetime: ~N[2024-03-30 19:00:00],
-          end_datetime: ~N[2024-03-30 21:00:00]
-        }
-      end
+      events =
+        for source <- Event.sources() do
+          %{
+            source: source,
+            source_id: "123",
+            name: "Elixir Meetup",
+            title: "Testing with ExUnit",
+            event_url: "http://example.com",
+            datetime: ~N[2024-03-30 19:00:00],
+            end_datetime: ~N[2024-03-30 21:00:00]
+          }
+        end
 
       MeetupCache.update_or_create(events)
 
@@ -132,7 +133,7 @@ defmodule MeetupBot.MeetupCacheTest do
         }
         |> Repo.insert!()
 
-        #Upcoming Event
+        # Upcoming Event
         %Event{
           source: source,
           source_id: "456",
@@ -146,7 +147,8 @@ defmodule MeetupBot.MeetupCacheTest do
       end
 
       # This event will continue to be part of the response of the API
-      upcoming_meetup_event = %Event{
+      upcoming_meetup_event =
+        %Event{
           source: "meetup",
           source_id: "789",
           name: "Elixir Meetup in meetup",
@@ -165,7 +167,7 @@ defmodule MeetupBot.MeetupCacheTest do
         %{source_id: "123", source: "manual"} = _previous_manual,
         %{source_id: "456", source: "GDG"} = _upcoming_gdg,
         %{source_id: "456", source: "manual"} = _upcoming_manual,
-        %{source_id: "789", source: "meetup"} = _upcoming_meetup,
+        %{source_id: "789", source: "meetup"} = _upcoming_meetup
       ] = MeetupCache.all()
 
       MeetupCache.sync("GDG", [])
@@ -175,7 +177,7 @@ defmodule MeetupBot.MeetupCacheTest do
         %{source_id: "123", source: "GDG"} = _previous_gdg,
         %{source_id: "123", source: "manual"} = _previous_manual,
         %{source_id: "456", source: "manual"} = _upcoming_manual,
-        %{source_id: "789", source: "meetup"} = _upcoming_meetup,
+        %{source_id: "789", source: "meetup"} = _upcoming_meetup
       ] = MeetupCache.all()
 
       # This will delete both because only external source take into
@@ -185,7 +187,7 @@ defmodule MeetupBot.MeetupCacheTest do
       [
         %{source_id: "123", source: "meetup"} = _previous_meetup,
         %{source_id: "123", source: "GDG"} = _previous_gdg,
-        %{source_id: "789", source: "meetup"} = _upcoming_meetup,
+        %{source_id: "789", source: "meetup"} = _upcoming_meetup
       ] = MeetupCache.all()
     end
   end

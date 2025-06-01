@@ -49,16 +49,18 @@ defmodule MeetupBot.MeetupCache do
   defp delete_events_not_present_in_source(source, events) do
     source_ids = Enum.map(events, & &1.source_id)
 
-    query = Event
-            |> where([e], e.source == ^source)
-            |> where([e], e.source_id not in ^source_ids)
+    query =
+      Event
+      |> where([e], e.source == ^source)
+      |> where([e], e.source_id not in ^source_ids)
 
-    query = if source != Event.manual_source() do
-      now = DateTime.now!("America/Montevideo")
-      query = query |> where([e], e.datetime > ^now)
-    else
-      query
-    end
+    query =
+      if source != Event.manual_source() do
+        now = DateTime.now!("America/Montevideo")
+        query = query |> where([e], e.datetime > ^now)
+      else
+        query
+      end
 
     query |> Repo.delete_all()
   end
