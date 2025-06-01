@@ -1,7 +1,6 @@
 defmodule MeetupBot.MeetupCache do
   alias MeetupBot.Event
   alias MeetupBot.Repo
-  alias MeetupBot.Constants
 
   import Ecto.Query
 
@@ -33,7 +32,7 @@ defmodule MeetupBot.MeetupCache do
   # of events (past and future) and we substitute the whole list every time:
   def sync_manual_events(events) do
     update_or_create(events)
-    delete_events_not_present_in_source(Constants.manual_source(), events)
+    delete_events_not_present_in_source(Event.manual_source(), events)
   end
 
   def update_or_create(events) do
@@ -58,7 +57,7 @@ defmodule MeetupBot.MeetupCache do
             |> where([e], e.source == ^source)
             |> where([e], e.source_id not in ^source_ids)
 
-    query = if source != Constants.manual_source() do
+    query = if source != Event.manual_source() do
       now = DateTime.now!("America/Montevideo")
       query = query |> where([e], e.datetime > ^now)
     else

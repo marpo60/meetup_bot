@@ -23,4 +23,13 @@ defmodule MeetupBot.Event do
     |> unique_constraint([:source, :source_id])
     |> validate_required(fields)
   end
+
+  @doc "Source identifier for GDG events"
+  def gdg_source, do: "gdg"
+
+  @doc "Source identifier for Meetup events"
+  def meetup_source, do: "meetup"
+
+  @doc "Source identifier for manual events"
+  def manual_source, do: "manual"
 end

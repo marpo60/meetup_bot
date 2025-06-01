@@ -4,8 +4,8 @@ defmodule MeetupBot.GDGCacheWorker do
   require OpenTelemetry.Tracer
 
   alias MeetupBot.MeetupCache
+  alias MeetupBot.Event
   alias MeetupBot.GDG
-  alias MeetupBot.Constants
   alias OpenTelemetry.Tracer
 
   @impl true
@@ -14,7 +14,7 @@ defmodule MeetupBot.GDGCacheWorker do
       Tracer.set_attributes([{:worker, "GDGCacheWorker"}])
 
       gdg_events = GDG.fetch_live_events()
-      MeetupCache.sync_upcoming_external_events(gdg_events, Constants.gdg_source())
+      MeetupCache.sync_upcoming_external_events(gdg_events, Event.gdg_source())
 
       :ok
     end
