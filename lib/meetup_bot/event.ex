@@ -25,7 +25,7 @@ defmodule MeetupBot.Event do
   end
 
   @doc "Source identifier for GDG events"
-  def gdg_source, do: "gdg"
+  def gdg_source, do: "GDG"
 
   @doc "Source identifier for Meetup events"
   def meetup_source, do: "meetup"

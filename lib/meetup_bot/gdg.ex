@@ -9,6 +9,9 @@ defmodule MeetupBot.GDG do
     def connect_url, do: "https://gdg.community.dev"
   end
 
+  alias MeetupBot.Event
+
+
   def fetch_live_events() do
     response =
       Req.new(base_url: host().connect_url())
@@ -33,7 +36,7 @@ defmodule MeetupBot.GDG do
     {:ok, edt} = edt |> NaiveDateTime.from_iso8601()
 
     %{
-      source: "GDG",
+      source: Event.gdg_source(),
       source_id: id |> to_string,
       name: "GDG",
       title: title,

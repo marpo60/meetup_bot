@@ -35,6 +35,8 @@ defmodule MeetupBot.Meetup do
     "flutter-montevideo"
   ]
 
+  alias MeetupBot.Event
+
   defmodule Host do
     @callback connect_url() :: String.t()
   end
@@ -118,7 +120,7 @@ defmodule MeetupBot.Meetup do
       |> NaiveDateTime.from_iso8601()
 
     %{
-      source: "meetup",
+      source: Event.meetup_source(),
       source_id: id,
       name: meetup["name"],
       title: title,
