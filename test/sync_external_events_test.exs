@@ -1,4 +1,4 @@
-defmodule MeetupBot.MeetupCacheWorkerTest do
+defmodule MeetupBot.SyncExternalEventsTest do
   use ExUnit.Case, async: false
 
   alias MeetupBot.MeetupCache
