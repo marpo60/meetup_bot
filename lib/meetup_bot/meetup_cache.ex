@@ -21,18 +21,9 @@ defmodule MeetupBot.MeetupCache do
     |> Repo.all()
   end
 
-  # Meant to be used for external sources (eg. GDG and meetup),
-  # for which the event list we get is only the UPCOMING ones:
-  def sync_upcoming_external_events(events, source) do
+  def sync(source, events) do
     update_or_create(events)
     delete_events_not_present_in_source(source, events)
-  end
-
-  # Meant to be used with manual events, for which we have the full list
-  # of events (past and future) and we substitute the whole list every time:
-  def sync_manual_events(events) do
-    update_or_create(events)
-    delete_events_not_present_in_source(Event.manual_source(), events)
   end
 
   def update_or_create(events) do
@@ -49,8 +40,13 @@ defmodule MeetupBot.MeetupCache do
 
   # Deletes events stored on the DB from the provided source,
   # that are not included in the events lists
-  # it means the event was canceled
-  def delete_events_not_present_in_source(source, events) do
+  # because it means the event was canceled
+  #
+  # When used with external source (eg. GDG and meetup),
+  # the event list we get is only the upcoming ones
+  #
+  # When used with manual source the event list will be the full list
+  defp delete_events_not_present_in_source(source, events) do
     source_ids = Enum.map(events, & &1.source_id)
 
     query = Event

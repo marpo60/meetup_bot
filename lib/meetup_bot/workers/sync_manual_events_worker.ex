@@ -13,8 +13,8 @@ defmodule MeetupBot.SyncManualEventsWorker do
       Tracer.set_attributes([{:worker, "SyncManualEventsWorker"}])
 
       events = events()
-      MeetupCache.update_or_create(events)
-      MeetupCache.delete_events_not_present_in_source("manual", events)
+
+      MeetupCache.sync(Event.manual_source(), events)
 
       :ok
     end

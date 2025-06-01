@@ -15,8 +15,7 @@ defmodule MeetupBot.GDGCacheWorker do
 
       events = GDG.fetch_live_events()
 
-      MeetupCache.update_or_create(events)
-      MeetupCache.delete_events_not_present_in_source(Event.gdg_source(), events)
+      MeetupCache.sync(Event.gdg_source(), events)
 
       :ok
     end

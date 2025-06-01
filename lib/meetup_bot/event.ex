@@ -32,4 +32,12 @@ defmodule MeetupBot.Event do
 
   @doc "Source identifier for manual events"
   def manual_source, do: "manual"
+
+  def sources do
+    [
+      meetup_source(),
+      gdg_source(),
+      manual_source()
+    ]
+  end
 end
