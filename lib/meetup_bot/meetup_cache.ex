@@ -26,17 +26,17 @@ defmodule MeetupBot.MeetupCache do
   # for which the event list we get is only the UPCOMING ones:
   def sync_upcoming_external_events(events, source) do
     update_or_create(events)
-    delete_other_stored_events_from_source(events, source, only_upcoming: true)
+    delete_events_not_present_in_source(source, events)
   end
 
   # Meant to be used with manual events, for which we have the full list
   # of events (past and future) and we substitute the whole list every time:
   def sync_manual_events(events) do
     update_or_create(events)
-    delete_other_stored_events_from_source(events, Constants.manual_source())
+    delete_events_not_present_in_source(Constants.manual_source(), events)
   end
 
-  defp update_or_create(events) do
+  def update_or_create(events) do
     events
     |> Enum.each(fn e ->
       case Repo.get_by(Event, %{source: e.source, source_id: e.source_id}) do
@@ -48,23 +48,23 @@ defmodule MeetupBot.MeetupCache do
     end)
   end
 
-  defp delete_other_stored_events_from_source(events, source, opts \\ []) do
-    # Deletes events stored on the DB from the provided source,
-    # that are not included in the events lists
-    # (because it means the event was canceled)
+  # Deletes events stored on the DB from the provided source,
+  # that are not included in the events lists
+  # it means the event was canceled
+  def delete_events_not_present_in_source(source, events) do
     source_ids = Enum.map(events, & &1.source_id)
 
     query = Event
-    |> where([e], e.source == ^source)
-    |> where([e], e.source_id not in ^source_ids)
+            |> where([e], e.source == ^source)
+            |> where([e], e.source_id not in ^source_ids)
 
-    query = if opts[:only_upcoming] do
-      now = DateTime.now!("America/Montevideo") |> DateTime.to_naive()
-      where(query, [e], e.datetime > ^now)
+    query = if source != Constants.manual_source() do
+      now = DateTime.now!("America/Montevideo")
+      query = query |> where([e], e.datetime > ^now)
     else
       query
     end
 
-    Repo.delete_all(query)
+    query |> Repo.delete_all()
   end
 end
