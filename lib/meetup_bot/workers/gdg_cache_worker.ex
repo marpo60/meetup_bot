@@ -13,8 +13,10 @@ defmodule MeetupBot.GDGCacheWorker do
     Tracer.with_span "oban.perform" do
       Tracer.set_attributes([{:worker, "GDGCacheWorker"}])
 
-      gdg_events = GDG.fetch_live_events()
-      MeetupCache.sync_upcoming_external_events(gdg_events, Event.gdg_source())
+      events = GDG.fetch_live_events()
+
+      MeetupCache.update_or_create(events)
+      MeetupCache.delete_events_not_present_in_source(Event.gdg_source(), events)
 
       :ok
     end

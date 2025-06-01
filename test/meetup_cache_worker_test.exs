@@ -3,6 +3,7 @@ defmodule MeetupBot.MeetupCacheWorkerTest do
 
   alias MeetupBot.MeetupCache
   alias MeetupBot.MeetupCacheWorker
+  alias MeetupBot.GDGCacheWorker
   alias MeetupBot.Repo
   alias MeetupBot.Event
 
@@ -175,7 +176,18 @@ defmodule MeetupBot.MeetupCacheWorkerTest do
       """)
     end)
 
+    Bypass.expect(bypass_gdg(), "GET", "/api/event", fn conn ->
+      conn
+      |> Plug.Conn.put_resp_content_type("application/json")
+      |> Plug.Conn.resp(200, """
+      {
+        "results": []
+      }
+      """)
+    end)
+
     assert :ok = MeetupCacheWorker.perform(%Oban.Job{})
+    assert :ok = GDGCacheWorker.perform(%Oban.Job{})
 
     [meetup, gdg, luma] = MeetupCache.all()
     assert meetup.datetime == ~N[2024-03-29 19:00:00]
