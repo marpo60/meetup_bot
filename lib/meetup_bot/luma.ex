@@ -43,7 +43,9 @@ defmodule MeetupBot.Luma do
 
   defp process_event(event) do
     {:ok, start_dt, _} = DateTime.from_iso8601(event["start_at"])
+    start_dt = DateTime.shift_zone!(start_dt, "America/Montevideo")
     {:ok, end_dt, _} = DateTime.from_iso8601(event["end_at"])
+    end_dt = DateTime.shift_zone!(end_dt, "America/Montevideo")
 
     %{
       source: "luma",
