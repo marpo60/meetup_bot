@@ -198,6 +198,6 @@ defmodule MeetupBot.MeetupCacheWorkerTest do
     [meetup, gdg, luma] = MeetupCache.all()
     assert meetup.datetime == ~N[2024-03-29 19:00:00]
     assert gdg.datetime == ~N[2024-03-31 19:00:00]
-    assert luma.datetime == ~N[2024-04-07 19:00:00]
+    assert luma.datetime == ~N[2024-04-07 16:00:00]
   end
 end
