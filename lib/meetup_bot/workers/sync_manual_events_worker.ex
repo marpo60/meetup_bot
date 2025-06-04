@@ -5,22 +5,27 @@ defmodule MeetupBot.SyncManualEventsWorker do
 
   alias MeetupBot.MeetupCache
   alias OpenTelemetry.Tracer
+  alias MeetupBot.Event
 
   @impl true
   def perform(%Oban.Job{}) do
     Tracer.with_span "oban.perform" do
       Tracer.set_attributes([{:worker, "SyncManualEventsWorker"}])
 
-      MeetupCache.sync_manual(events())
+      events = events()
+
+      MeetupCache.sync(Event.manual_source(), events)
 
       :ok
     end
   end
 
   defp events() do
+    source = Event.manual_source()
+
     [
       %{
-        source: "manual",
+        source: source,
         source_id: "0",
         name: "Name",
         title: "Title",
@@ -29,7 +34,7 @@ defmodule MeetupBot.SyncManualEventsWorker do
         end_datetime: ~N[2020-01-01 19:00:00]
       },
       %{
-        source: "manual",
+        source: source,
         source_id: "1",
         name: "MujeresIT",
         title: "Conversatorio de Mujeres Online - Previa del 8M",

@@ -1,21 +1,21 @@
-defmodule MeetupBot.MeetupCacheWorker do
+defmodule MeetupBot.GDGCacheWorker do
   use Oban.Worker
 
   require OpenTelemetry.Tracer
 
   alias MeetupBot.MeetupCache
-  alias MeetupBot.Meetup
   alias MeetupBot.Event
+  alias MeetupBot.GDG
   alias OpenTelemetry.Tracer
 
   @impl true
   def perform(%Oban.Job{}) do
     Tracer.with_span "oban.perform" do
-      Tracer.set_attributes([{:worker, "MeetupCacheWorker"}])
+      Tracer.set_attributes([{:worker, "GDGCacheWorker"}])
 
-      events = Meetup.fetch_upcoming_meetups()
+      events = GDG.fetch_live_events()
 
-      MeetupCache.sync(Event.meetup_source(), events)
+      MeetupCache.sync(Event.gdg_source(), events)
 
       :ok
     end

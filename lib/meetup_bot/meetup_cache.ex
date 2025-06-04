@@ -21,7 +21,12 @@ defmodule MeetupBot.MeetupCache do
     |> Repo.all()
   end
 
-  def update(events) do
+  def sync(source, events) do
+    update_or_create(events)
+    delete_events_not_present_in_source(source, events)
+  end
+
+  def update_or_create(events) do
     events
     |> Enum.each(fn e ->
       case Repo.get_by(Event, %{source: e.source, source_id: e.source_id}) do
@@ -33,14 +38,30 @@ defmodule MeetupBot.MeetupCache do
     end)
   end
 
-  def sync_manual(events) do
-    update(events)
+  # Deletes events stored on the DB from the provided source,
+  # that are not included in the events lists
+  # because it means the event was canceled
+  #
+  # When used with external source (eg. GDG and meetup),
+  # the event list we get is only the upcoming ones
+  #
+  # When used with manual source the event list will be the full list
+  defp delete_events_not_present_in_source(source, events) do
+    source_ids = Enum.map(events, & &1.source_id)
 
-    ids = Enum.map(events, & &1.source_id)
+    query =
+      Event
+      |> where([e], e.source == ^source)
+      |> where([e], e.source_id not in ^source_ids)
 
-    Event
-    |> where([e], e.source == "manual")
-    |> where([e], e.source_id not in ^ids)
-    |> Repo.delete_all()
+    query =
+      if source != Event.manual_source() do
+        now = DateTime.now!("America/Montevideo")
+        query |> where([e], e.datetime > ^now)
+      else
+        query
+      end
+
+    query |> Repo.delete_all()
   end
 end

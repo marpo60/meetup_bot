@@ -26,6 +26,20 @@ defmodule Helpers do
 
     bypass
   end
+
+  def tomorrow do
+    DateTime.utc_now()
+    |> DateTime.add(1, :day)
+    |> DateTime.truncate(:second)
+    |> DateTime.to_naive()
+  end
+
+  def day_after_tomorrow do
+    DateTime.utc_now()
+    |> DateTime.add(2, :day)
+    |> DateTime.truncate(:second)
+    |> DateTime.to_naive()
+  end
 end
 
 ExUnit.start()
