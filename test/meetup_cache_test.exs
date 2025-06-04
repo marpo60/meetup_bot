@@ -32,7 +32,7 @@ defmodule MeetupBot.MeetupCacheTest do
 
       MeetupCache.update_or_create(events)
 
-      [event, _gdg, _manual] = MeetupCache.all()
+      [event, _gdg, _manual, _luma] = MeetupCache.all()
 
       assert event.source == "meetup"
       assert event.source_id == "123"
@@ -165,8 +165,10 @@ defmodule MeetupBot.MeetupCacheTest do
         %{source_id: "123", source: "meetup"} = _previous_meetup,
         %{source_id: "123", source: "GDG"} = _previous_gdg,
         %{source_id: "123", source: "manual"} = _previous_manual,
+        %{source_id: "123", source: "luma"} = _previous_luma,
         %{source_id: "456", source: "GDG"} = _upcoming_gdg,
         %{source_id: "456", source: "manual"} = _upcoming_manual,
+        %{source_id: "456", source: "luma"} = _upcoming_luma,
         %{source_id: "789", source: "meetup"} = _upcoming_meetup
       ] = MeetupCache.all()
 
@@ -176,7 +178,9 @@ defmodule MeetupBot.MeetupCacheTest do
         %{source_id: "123", source: "meetup"} = _previous_meetup,
         %{source_id: "123", source: "GDG"} = _previous_gdg,
         %{source_id: "123", source: "manual"} = _previous_manual,
+        %{source_id: "123", source: "luma"} = _previous_luma,
         %{source_id: "456", source: "manual"} = _upcoming_manual,
+        %{source_id: "456", source: "luma"} = _upcoming_luma,
         %{source_id: "789", source: "meetup"} = _upcoming_meetup
       ] = MeetupCache.all()
 
@@ -187,6 +191,8 @@ defmodule MeetupBot.MeetupCacheTest do
       [
         %{source_id: "123", source: "meetup"} = _previous_meetup,
         %{source_id: "123", source: "GDG"} = _previous_gdg,
+        %{source_id: "123", source: "luma"} = _previous_luma,
+        %{source_id: "456", source: "luma"} = _upcoming_luma,
         %{source_id: "789", source: "meetup"} = _upcoming_meetup
       ] = MeetupCache.all()
     end

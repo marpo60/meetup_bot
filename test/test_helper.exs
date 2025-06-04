@@ -26,7 +26,6 @@ defmodule Helpers do
 
     bypass
   end
-end
 
   def tomorrow do
     DateTime.utc_now()

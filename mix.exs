@@ -31,7 +31,7 @@ defmodule MeetupBot.MixProject do
   defp deps do
     [
       {:bandit, "~> 1.6.0"},
-      {:req, "~> 0.5.6"},
+      {:req, "~> 0.5.10"},
       {:ecto_sql, "~> 3.12.0"},
       {:ecto_sqlite3, "~> 0.17.2"},
       {:slack_request, "~> 1.0"},

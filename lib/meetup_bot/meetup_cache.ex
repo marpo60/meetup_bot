@@ -57,7 +57,7 @@ defmodule MeetupBot.MeetupCache do
     query =
       if source != Event.manual_source() do
         now = DateTime.now!("America/Montevideo")
-        query = query |> where([e], e.datetime > ^now)
+        query |> where([e], e.datetime > ^now)
       else
         query
       end
