@@ -17,6 +17,7 @@ defmodule MeetupBot.Application do
     children = [
       {Bandit, plug: MeetupBot.Router, scheme: :http, port: 4000},
       MeetupBot.Repo,
+      MeetupBot.OverlapDetector,
       {Oban,
        engine: Oban.Engines.Lite,
        repo: MeetupBot.Repo,
