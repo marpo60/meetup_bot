@@ -197,4 +197,31 @@ defmodule MeetupBot.MeetupCacheTest do
       ] = MeetupCache.all()
     end
   end
+
+  describe "overlapping_upcoming_events/1" do
+    test " works" do
+      event_1 =
+        %Event{
+          datetime: ~N[2030-03-31 19:00:00],
+          end_datetime: ~N[2030-03-31 21:00:00]
+        }
+        |> Repo.insert!()
+
+      event_2 =
+        %Event{
+          datetime: ~N[2030-03-31 19:00:00],
+          end_datetime: ~N[2030-03-31 21:00:00]
+        }
+        |> Repo.insert!()
+
+      event_3 =
+        %Event{
+          datetime: ~N[2030-04-05 19:00:00],
+          end_datetime: ~N[2030-04-05 21:00:00]
+        }
+        |> Repo.insert!()
+
+      assert [[event_1, event_2]] == MeetupCache.overlapping_upcoming_events()
+    end
+  end
 end

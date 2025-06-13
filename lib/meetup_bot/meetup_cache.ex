@@ -64,4 +64,16 @@ defmodule MeetupBot.MeetupCache do
 
     query |> Repo.delete_all()
   end
+
+  def overlapping_upcoming_events() do
+    now = DateTime.now!("America/Montevideo")
+
+    Event
+    |> join(:inner, [a], b in Event, on: a.id < b.id)
+    |> where([e], e.datetime > ^now)
+    |> where([a, b], a.datetime < b.end_datetime)
+    |> where([a, b], a.end_datetime > b.datetime)
+    |> select([a, b], [a, b])
+    |> Repo.all()
+  end
 end
