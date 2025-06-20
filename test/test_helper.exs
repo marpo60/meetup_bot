@@ -6,7 +6,7 @@ defmodule Helpers do
   def bypass_meetup do
     bypass = Bypass.open()
     url = "http://localhost:#{bypass.port}"
-    Mox.expect(MeetupBot.Meetup.TestHost, :connect_url, fn -> url end)
+    Mox.stub(MeetupBot.Meetup.TestHost, :connect_url, fn -> url end)
 
     bypass
   end
@@ -14,7 +14,7 @@ defmodule Helpers do
   def bypass_gdg do
     bypass = Bypass.open()
     url = "http://localhost:#{bypass.port}"
-    Mox.expect(MeetupBot.GDG.TestHost, :connect_url, fn -> url end)
+    Mox.stub(MeetupBot.GDG.TestHost, :connect_url, fn -> url end)
 
     bypass
   end
@@ -22,7 +22,7 @@ defmodule Helpers do
   def bypass_luma do
     bypass = Bypass.open()
     url = "http://localhost:#{bypass.port}"
-    Mox.expect(MeetupBot.Luma.TestHost, :connect_url, fn -> url end)
+    Mox.stub(MeetupBot.Luma.TestHost, :connect_url, fn -> url end)
 
     bypass
   end
