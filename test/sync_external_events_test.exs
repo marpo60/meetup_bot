@@ -18,7 +18,7 @@ defmodule MeetupBot.SyncExternalEventsTest do
   end
 
   test "perform/1 stores new meetups", %{} do
-    Bypass.expect(bypass_meetup(), "POST", "/gql", fn conn ->
+    TestServer.add(test_server_meetup(), "/gql", via: :post, to: fn conn ->
       conn
       |> Plug.Conn.put_resp_content_type("application/json")
       |> Plug.Conn.resp(200, """
@@ -45,7 +45,7 @@ defmodule MeetupBot.SyncExternalEventsTest do
       """)
     end)
 
-    Bypass.expect(bypass_gdg(), "GET", "/api/event", fn conn ->
+    TestServer.add(test_server_gdg(), "/api/event", via: :get, to: fn conn ->
       conn
       |> Plug.Conn.put_resp_content_type("application/json")
       |> Plug.Conn.resp(200, """
@@ -63,7 +63,7 @@ defmodule MeetupBot.SyncExternalEventsTest do
       """)
     end)
 
-    Bypass.expect(bypass_luma(), "GET", "/calendar/get-items", fn conn ->
+    TestServer.add(test_server_luma(), "/calendar/get-items", via: :get, to: fn conn ->
       conn
       |> Plug.Conn.put_resp_content_type("application/json")
       |> Plug.Conn.resp(200, """
@@ -125,7 +125,7 @@ defmodule MeetupBot.SyncExternalEventsTest do
     }
     |> Repo.insert!()
 
-    Bypass.expect(bypass_meetup(), "POST", "/gql", fn conn ->
+    TestServer.add(test_server_meetup(), "/gql", via: :post, to: fn conn ->
       conn
       |> Plug.Conn.put_resp_content_type("application/json")
       |> Plug.Conn.resp(200, """
@@ -152,7 +152,7 @@ defmodule MeetupBot.SyncExternalEventsTest do
       """)
     end)
 
-    Bypass.expect(bypass_gdg(), "GET", "/api/event", fn conn ->
+    TestServer.add(test_server_gdg(), "/api/event", via: :get, to: fn conn ->
       conn
       |> Plug.Conn.put_resp_content_type("application/json")
       |> Plug.Conn.resp(200, """
@@ -170,7 +170,7 @@ defmodule MeetupBot.SyncExternalEventsTest do
       """)
     end)
 
-    Bypass.expect(bypass_luma(), "GET", "/calendar/get-items", fn conn ->
+    TestServer.add(test_server_luma(), "/calendar/get-items", via: :get, to: fn conn ->
       conn
       |> Plug.Conn.put_resp_content_type("application/json")
       |> Plug.Conn.resp(200, """
@@ -226,7 +226,7 @@ defmodule MeetupBot.SyncExternalEventsTest do
     }
     |> Repo.insert!()
 
-    Bypass.expect(bypass_meetup(), "POST", "/gql", fn conn ->
+    TestServer.add(test_server_meetup(), "/gql", via: :post, to: fn conn ->
       conn
       |> Plug.Conn.put_resp_content_type("application/json")
       |> Plug.Conn.resp(200, """
@@ -237,7 +237,7 @@ defmodule MeetupBot.SyncExternalEventsTest do
       """)
     end)
 
-    Bypass.expect(bypass_gdg(), "GET", "/api/event", fn conn ->
+    TestServer.add(test_server_gdg(), "/api/event", via: :get, to: fn conn ->
       conn
       |> Plug.Conn.put_resp_content_type("application/json")
       |> Plug.Conn.resp(200, """
@@ -247,7 +247,7 @@ defmodule MeetupBot.SyncExternalEventsTest do
       """)
     end)
 
-    Bypass.expect(bypass_luma(), "GET", "/calendar/get-items", fn conn ->
+    TestServer.add(test_server_luma(), "/calendar/get-items", via: :get, to: fn conn ->
       conn
       |> Plug.Conn.put_resp_content_type("application/json")
       |> Plug.Conn.resp(200, """
