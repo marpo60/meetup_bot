@@ -3,28 +3,25 @@ Mox.defmock(MeetupBot.GDG.TestHost, for: MeetupBot.GDG.Host)
 Mox.defmock(MeetupBot.Luma.TestHost, for: MeetupBot.Luma.Host)
 
 defmodule Helpers do
-  def bypass_meetup do
-    bypass = Bypass.open()
-    url = "http://localhost:#{bypass.port}"
-    Mox.stub(MeetupBot.Meetup.TestHost, :connect_url, fn -> url end)
+  def test_server_meetup do
+    {:ok, test_server} = TestServer.start()
+    Mox.stub(MeetupBot.Meetup.TestHost, :connect_url, fn -> TestServer.url(test_server) end)
 
-    bypass
+    test_server
   end
 
-  def bypass_gdg do
-    bypass = Bypass.open()
-    url = "http://localhost:#{bypass.port}"
-    Mox.stub(MeetupBot.GDG.TestHost, :connect_url, fn -> url end)
+  def test_server_gdg do
+    {:ok, test_server} = TestServer.start()
+    Mox.stub(MeetupBot.GDG.TestHost, :connect_url, fn -> TestServer.url(test_server) end)
 
-    bypass
+    test_server
   end
 
-  def bypass_luma do
-    bypass = Bypass.open()
-    url = "http://localhost:#{bypass.port}"
-    Mox.stub(MeetupBot.Luma.TestHost, :connect_url, fn -> url end)
+  def test_server_luma do
+    {:ok, test_server} = TestServer.start()
+    Mox.stub(MeetupBot.Luma.TestHost, :connect_url, fn -> TestServer.url(test_server) end)
 
-    bypass
+    test_server
   end
 
   def tomorrow do
