@@ -18,7 +18,7 @@ defmodule MeetupBot.SyncExternalEventsTest do
   end
 
   test "perform/1 stores new meetups", %{} do
-    Bypass.expect(bypass_meetup(), "POST", "/gql", fn conn ->
+    Bypass.expect(bypass_meetup(), "POST", "/gql-ext", fn conn ->
       conn
       |> Plug.Conn.put_resp_content_type("application/json")
       |> Plug.Conn.resp(200, """
@@ -26,15 +26,15 @@ defmodule MeetupBot.SyncExternalEventsTest do
         "data": {
           "g0": {
             "name": "Elixir Meetup",
-            "upcomingEvents": {
+            "events": {
               "edges": [
                 {
                   "node": {
                     "id": "123",
                     "title": "Testing with ExUnit",
                     "eventUrl": "http://example.com",
-                    "dateTime": "2024-03-28T22:00-03:00",
-                    "endTime": "2024-03-28T23:00-03:00"
+                    "dateTime": "2024-03-28T22:00:00-03:00",
+                    "endTime": "2024-03-28T23:00:00-03:00"
                   }
                 }
               ]
@@ -125,7 +125,7 @@ defmodule MeetupBot.SyncExternalEventsTest do
     }
     |> Repo.insert!()
 
-    Bypass.expect(bypass_meetup(), "POST", "/gql", fn conn ->
+    Bypass.expect(bypass_meetup(), "POST", "/gql-ext", fn conn ->
       conn
       |> Plug.Conn.put_resp_content_type("application/json")
       |> Plug.Conn.resp(200, """
@@ -133,15 +133,15 @@ defmodule MeetupBot.SyncExternalEventsTest do
         "data": {
           "g0": {
             "name": "Elixir Meetup",
-            "upcomingEvents": {
+            "events": {
               "edges": [
                 {
                   "node": {
                     "id": "123",
                     "title": "Testing with ExUnit",
                     "eventUrl": "http://example.com",
-                    "dateTime": "2024-03-29T19:00-03:00",
-                    "endTime": "2024-03-29T23:00-03:00"
+                    "dateTime": "2024-03-29T19:00:00-03:00",
+                    "endTime": "2024-03-29T23:00:00-03:00"
                   }
                 }
               ]
@@ -226,7 +226,7 @@ defmodule MeetupBot.SyncExternalEventsTest do
     }
     |> Repo.insert!()
 
-    Bypass.expect(bypass_meetup(), "POST", "/gql", fn conn ->
+    Bypass.expect(bypass_meetup(), "POST", "/gql-ext", fn conn ->
       conn
       |> Plug.Conn.put_resp_content_type("application/json")
       |> Plug.Conn.resp(200, """
