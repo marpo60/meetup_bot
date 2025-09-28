@@ -41,7 +41,8 @@ defmodule MeetupBot.RouterTest do
              "datetime" => NaiveDateTime.to_iso8601(datetime),
              "end_datetime" => NaiveDateTime.to_iso8601(end_datetime),
              "event_url" => "https://example.com/event",
-             "title" => "Title"
+             "title" => "Title",
+             "venue" => nil
            }
   end
 end

@@ -1,6 +1,6 @@
 defmodule SlackTest do
   use ExUnit.Case, async: true
-  use Plug.Test
+  import Plug.Test
 
   alias MeetupBot.Slack
 
@@ -9,7 +9,8 @@ defmodule SlackTest do
       %{
         name: "Elixir |> Meetup",
         event_url: "http://example.com",
-        datetime: ~N[2024-03-28 22:00:00]
+        datetime: ~N[2024-03-28 22:00:00],
+        venue: "Company"
       }
     ]
 
@@ -22,7 +23,7 @@ defmodule SlackTest do
         },
         {
           "type": "section",
-          "text": {"type": "mrkdwn", "text": "• Thu, 28 March - 22:00 - <http://example.com|Elixir |&gt; Meetup>"}
+          "text": {"type": "mrkdwn", "text": "• Jue, 28 Mar - 22:00 - <http://example.com|Elixir |&gt; Meetup> @ Company"}
         }
       ]
     }

@@ -71,6 +71,10 @@ defmodule MeetupBot.Meetup do
               dateTime
               endTime
               eventUrl
+              venues {
+                venueType
+                name
+              }
             }
           }
         }
@@ -101,14 +105,26 @@ defmodule MeetupBot.Meetup do
           "eventUrl" => event_url,
           "title" => title,
           "dateTime" => dt,
-          "endTime" => edt
+          "endTime" => edt,
+          "venues" => [
+            %{
+              "venueType" => venue_type,
+              "name" => venue_name
+            }
+          ]
         }
       }
     ] = get_in(meetup, ["events", "edges"])
 
     {:ok, dt} = dt |> NaiveDateTime.from_iso8601()
-
     {:ok, edt} = edt |> NaiveDateTime.from_iso8601()
+
+    # venue_type can be "online" or ""
+    # if "", it means the event is in-person
+    venue_name =
+      if venue_type == "" do
+        venue_name
+      end
 
     %{
       source: Event.meetup_source(),
@@ -117,7 +133,8 @@ defmodule MeetupBot.Meetup do
       title: title,
       event_url: event_url,
       datetime: dt,
-      end_datetime: edt
+      end_datetime: edt,
+      venue: venue_name
     }
   end
 
