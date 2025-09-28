@@ -52,7 +52,27 @@ defmodule MeetupBot.Slack do
   end
 
   defp to_bullet_item(meetup) do
-    "• #{Calendar.strftime(meetup.datetime, "%a, %-d %B - %H:%M")} - <#{meetup.event_url}|#{escaped_text(meetup.name)}>"
+    datetime =
+      Calendar.strftime(
+        meetup.datetime,
+        "%a, %-d %b - %H:%M",
+        abbreviated_month_names: fn month ->
+          {"Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dec"}
+          |> elem(month - 1)
+        end,
+        abbreviated_day_of_week_names: fn day_of_week ->
+          {"Lun", "Mar", "Mie", "Jue", "Vie", "Sab", "Dom"} |> elem(day_of_week - 1)
+        end
+      )
+
+    event_with_link = "<#{meetup.event_url}|#{escaped_text(meetup.name)}>"
+
+    venue =
+      if meetup.venue do
+        "@ #{meetup.venue}"
+      end
+
+    "• #{datetime} - #{event_with_link} #{venue}"
   end
 
   defp escaped_text(text) do
