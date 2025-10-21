@@ -108,6 +108,9 @@ defmodule MeetupBot.Router do
     |> send_resp(200, Jason.encode!(%{meetups: meetups}))
   end
 
+  # Forward /oban routes to Oban Web dashboard
+  forward "/oban", to: MeetupBot.ObanWeb.Router
+
   match _ do
     send_resp(conn, 404, ":(")
   end
