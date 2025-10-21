@@ -45,7 +45,7 @@ defmodule MeetupBot.SyncManualEventsWorker do
       %{
         source: source,
         source_id: "2",
-        name: "OWU",
+        name: "La Meetup III",
         title: "La Meetup III",
         event_url: "https://www.owu.uy/la-meetup",
         datetime: ~N[2025-11-01 09:00:00],
