@@ -1,5 +1,5 @@
 defmodule MeetupBot.MeetupCacheWorker do
-  use Oban.Worker
+  use Oban.Worker, max_attempts: 2
 
   require OpenTelemetry.Tracer
 
