@@ -18,90 +18,102 @@ defmodule MeetupBot.SyncExternalEventsTest do
   end
 
   test "perform/1 stores new meetups", %{} do
-    TestServer.add(test_server_meetup(), "/gql-ext", via: :post, to: fn conn ->
-      conn
-      |> Plug.Conn.put_resp_content_type("application/json")
-      |> Plug.Conn.resp(200, """
-      {
-        "data": {
-          "g0": {
-            "name": "Elixir Meetup",
-            "events": {
-              "edges": [
-                {
-                  "node": {
-                    "id": "123",
-                    "title": "Testing with ExUnit",
-                    "eventUrl": "http://example.com",
-                    "dateTime": "2024-03-28T22:00:00-03:00",
-                    "endTime": "2024-03-28T23:00:00-03:00",
-                    "venues": [{
-                      "venueType": "",
-                      "name": "Company"
-                    }]
+    TestServer.add(test_server_meetup(), "/gql-ext",
+      via: :post,
+      to: fn conn ->
+        conn
+        |> Plug.Conn.put_resp_content_type("application/json")
+        |> Plug.Conn.resp(200, """
+        {
+          "data": {
+            "g0": {
+              "name": "Elixir Meetup",
+              "events": {
+                "edges": [
+                  {
+                    "node": {
+                      "id": "123",
+                      "title": "Testing with ExUnit",
+                      "eventUrl": "http://example.com",
+                      "dateTime": "2024-03-28T22:00:00-03:00",
+                      "endTime": "2024-03-28T23:00:00-03:00",
+                      "venues": [{
+                        "venueType": "",
+                        "name": "Company"
+                      }]
+                    }
                   }
-                }
-              ]
-            }
-          }
-        }
-      }
-      """)
-    end)
-
-    TestServer.add(test_server_gdg(), "/api/event", via: :get, to: fn conn ->
-      conn
-      |> Plug.Conn.put_resp_content_type("application/json")
-      |> Plug.Conn.resp(200, """
-      {
-        "results": [
-          {
-            "id": 456,
-            "title": "Google Cloud Platform",
-            "url": "http://gdg.example.com",
-            "start_date": "2024-03-29T19:00:00",
-            "end_date": "2024-03-29T21:00:00"
-          }
-        ]
-      }
-      """)
-    end)
-
-    test_server_luma = test_server_luma()
-
-    TestServer.add(test_server_luma, "/calendar/get-items", via: :get, to: fn conn ->
-      conn
-      |> Plug.Conn.put_resp_content_type("application/json")
-      |> Plug.Conn.resp(200, """
-      {
-        "entries": [
-          {
-            "event": {
-              "api_id": "evt-789",
-              "name": "Cursor Meetup Montevideo",
-              "start_at": "2024-03-30T19:00:00.000Z",
-              "end_at": "2024-03-30T23:00:00.000Z",
-              "timezone": "America/Montevideo",
-              "url": "cursor-test",
-              "geo_address_info": {
-                "country": "Uruguay"
+                ]
               }
             }
           }
-        ]
-      }
-      """)
-    end)
+        }
+        """)
+      end
+    )
 
-    TestServer.add(test_server_luma, "/calendar/get-items", via: :get, to: fn conn ->
-      conn
-      |> Plug.Conn.put_resp_content_type("application/json")
-      |> Plug.Conn.resp(200, """
-      {
-        "entries": []
-      }
-      """)
-    end)
+    TestServer.add(test_server_gdg(), "/api/event",
+      via: :get,
+      to: fn conn ->
+        conn
+        |> Plug.Conn.put_resp_content_type("application/json")
+        |> Plug.Conn.resp(200, """
+        {
+          "results": [
+            {
+              "id": 456,
+              "title": "Google Cloud Platform",
+              "url": "http://gdg.example.com",
+              "start_date": "2024-03-29T19:00:00",
+              "end_date": "2024-03-29T21:00:00"
+            }
+          ]
+        }
+        """)
+      end
+    )
+
+    test_server_luma = test_server_luma()
+
+    TestServer.add(test_server_luma, "/calendar/get-items",
+      via: :get,
+      to: fn conn ->
+        conn
+        |> Plug.Conn.put_resp_content_type("application/json")
+        |> Plug.Conn.resp(200, """
+        {
+          "entries": [
+            {
+              "event": {
+                "api_id": "evt-789",
+                "name": "Cursor Meetup Montevideo",
+                "start_at": "2024-03-30T19:00:00.000Z",
+                "end_at": "2024-03-30T23:00:00.000Z",
+                "timezone": "America/Montevideo",
+                "url": "cursor-test",
+                "geo_address_info": {
+                  "country": "Uruguay"
+                }
+              }
+            }
+          ]
+        }
+        """)
+      end
+    )
+
+    TestServer.add(test_server_luma, "/calendar/get-items",
+      via: :get,
+      to: fn conn ->
+        conn
+        |> Plug.Conn.put_resp_content_type("application/json")
+        |> Plug.Conn.resp(200, """
+        {
+          "entries": []
+        }
+        """)
+      end
+    )
 
     assert :ok = MeetupCacheWorker.perform(%Oban.Job{})
     assert :ok = GDGCacheWorker.perform(%Oban.Job{})
@@ -141,91 +153,103 @@ defmodule MeetupBot.SyncExternalEventsTest do
     }
     |> Repo.insert!()
 
-    TestServer.add(test_server_meetup(), "/gql-ext", via: :post, to: fn conn ->
-      conn
-      |> Plug.Conn.put_resp_content_type("application/json")
-      |> Plug.Conn.resp(200, """
-      {
-        "data": {
-          "g0": {
-            "name": "Elixir Meetup",
-            "events": {
-              "edges": [
-                {
-                  "node": {
-                    "id": "123",
-                    "title": "Testing with ExUnit",
-                    "eventUrl": "http://example.com",
-                    "dateTime": "2024-03-29T19:00:00-03:00",
-                    "endTime": "2024-03-29T23:00:00-03:00",
-                    "venues": [{
-                      "venueType": "",
-                      "name": "Company"
-                    }]
+    TestServer.add(test_server_meetup(), "/gql-ext",
+      via: :post,
+      to: fn conn ->
+        conn
+        |> Plug.Conn.put_resp_content_type("application/json")
+        |> Plug.Conn.resp(200, """
+        {
+          "data": {
+            "g0": {
+              "name": "Elixir Meetup",
+              "events": {
+                "edges": [
+                  {
+                    "node": {
+                      "id": "123",
+                      "title": "Testing with ExUnit",
+                      "eventUrl": "http://example.com",
+                      "dateTime": "2024-03-29T19:00:00-03:00",
+                      "endTime": "2024-03-29T23:00:00-03:00",
+                      "venues": [{
+                        "venueType": "",
+                        "name": "Company"
+                      }]
+                    }
+
                   }
-
-                }
-              ]
-            }
-          }
-        }
-      }
-      """)
-    end)
-
-    TestServer.add(test_server_gdg(), "/api/event", via: :get, to: fn conn ->
-      conn
-      |> Plug.Conn.put_resp_content_type("application/json")
-      |> Plug.Conn.resp(200, """
-      {
-        "results": [
-          {
-            "id": 456,
-            "title": "Google Cloud Platform",
-            "url": "http://gdg.example.com",
-            "start_date": "2024-03-31T19:00:00",
-            "end_date": "2024-03-31T23:00:00"
-          }
-        ]
-      }
-      """)
-    end)
-
-    test_server_luma = test_server_luma()
-
-    TestServer.add(test_server_luma, "/calendar/get-items", via: :get, to: fn conn ->
-      conn
-      |> Plug.Conn.put_resp_content_type("application/json")
-      |> Plug.Conn.resp(200, """
-      {
-        "entries": [
-          {
-            "event": {
-              "api_id": "evt-789",
-              "name": "Cursor Meetup Montevideo Updated",
-              "start_at": "2024-04-01T19:00:00.000Z",
-              "end_at": "2024-04-01T23:00:00.000Z",
-              "timezone": "America/Montevideo",
-              "url": "cursor-updated",
-              "geo_address_info": {
-                "country": "Uruguay"
+                ]
               }
             }
           }
-        ]
-      }
-      """)
-    end)
+        }
+        """)
+      end
+    )
 
-    TestServer.add(test_server_luma, "/calendar/get-items", via: :get, to: fn conn ->
-      conn
-      |> Plug.Conn.put_resp_content_type("application/json")
-      |> Plug.Conn.resp(200, """
-      {
-        "entries": []
-      }
-      """)
-    end)
+    TestServer.add(test_server_gdg(), "/api/event",
+      via: :get,
+      to: fn conn ->
+        conn
+        |> Plug.Conn.put_resp_content_type("application/json")
+        |> Plug.Conn.resp(200, """
+        {
+          "results": [
+            {
+              "id": 456,
+              "title": "Google Cloud Platform",
+              "url": "http://gdg.example.com",
+              "start_date": "2024-03-31T19:00:00",
+              "end_date": "2024-03-31T23:00:00"
+            }
+          ]
+        }
+        """)
+      end
+    )
+
+    test_server_luma = test_server_luma()
+
+    TestServer.add(test_server_luma, "/calendar/get-items",
+      via: :get,
+      to: fn conn ->
+        conn
+        |> Plug.Conn.put_resp_content_type("application/json")
+        |> Plug.Conn.resp(200, """
+        {
+          "entries": [
+            {
+              "event": {
+                "api_id": "evt-789",
+                "name": "Cursor Meetup Montevideo Updated",
+                "start_at": "2024-04-01T19:00:00.000Z",
+                "end_at": "2024-04-01T23:00:00.000Z",
+                "timezone": "America/Montevideo",
+                "url": "cursor-updated",
+                "geo_address_info": {
+                  "country": "Uruguay"
+                }
+              }
+            }
+          ]
+        }
+        """)
+      end
+    )
+
+    TestServer.add(test_server_luma, "/calendar/get-items",
+      via: :get,
+      to: fn conn ->
+        conn
+        |> Plug.Conn.put_resp_content_type("application/json")
+        |> Plug.Conn.resp(200, """
+        {
+          "entries": []
+        }
+        """)
+      end
+    )
 
     assert :ok = MeetupCacheWorker.perform(%Oban.Job{})
     assert :ok = GDGCacheWorker.perform(%Oban.Job{})
@@ -259,48 +283,60 @@ defmodule MeetupBot.SyncExternalEventsTest do
     }
     |> Repo.insert!()
 
-    TestServer.add(test_server_meetup(), "/gql-ext", via: :post, to: fn conn ->
-      conn
-      |> Plug.Conn.put_resp_content_type("application/json")
-      |> Plug.Conn.resp(200, """
-      {
-        "data": {
+    TestServer.add(test_server_meetup(), "/gql-ext",
+      via: :post,
+      to: fn conn ->
+        conn
+        |> Plug.Conn.put_resp_content_type("application/json")
+        |> Plug.Conn.resp(200, """
+        {
+          "data": {
+          }
         }
-      }
-      """)
-    end)
+        """)
+      end
+    )
 
-    TestServer.add(test_server_gdg(), "/api/event", via: :get, to: fn conn ->
-      conn
-      |> Plug.Conn.put_resp_content_type("application/json")
-      |> Plug.Conn.resp(200, """
-      {
-        "results": []
-      }
-      """)
-    end)
+    TestServer.add(test_server_gdg(), "/api/event",
+      via: :get,
+      to: fn conn ->
+        conn
+        |> Plug.Conn.put_resp_content_type("application/json")
+        |> Plug.Conn.resp(200, """
+        {
+          "results": []
+        }
+        """)
+      end
+    )
 
     test_server_luma = test_server_luma()
 
-    TestServer.add(test_server_luma, "/calendar/get-items", via: :get, to: fn conn ->
-      conn
-      |> Plug.Conn.put_resp_content_type("application/json")
-      |> Plug.Conn.resp(200, """
-      {
-        "entries": []
-      }
-      """)
-    end)
+    TestServer.add(test_server_luma, "/calendar/get-items",
+      via: :get,
+      to: fn conn ->
+        conn
+        |> Plug.Conn.put_resp_content_type("application/json")
+        |> Plug.Conn.resp(200, """
+        {
+          "entries": []
+        }
+        """)
+      end
+    )
 
-    TestServer.add(test_server_luma, "/calendar/get-items", via: :get, to: fn conn ->
-      conn
-      |> Plug.Conn.put_resp_content_type("application/json")
-      |> Plug.Conn.resp(200, """
-      {
-        "entries": []
-      }
-      """)
-    end)
+    TestServer.add(test_server_luma, "/calendar/get-items",
+      via: :get,
+      to: fn conn ->
+        conn
+        |> Plug.Conn.put_resp_content_type("application/json")
+        |> Plug.Conn.resp(200, """
+        {
+          "entries": []
+        }
+        """)
+      end
+    )
 
     assert :ok = MeetupCacheWorker.perform(%Oban.Job{})
     assert :ok = GDGCacheWorker.perform(%Oban.Job{})
