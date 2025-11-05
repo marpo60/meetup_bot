@@ -18,7 +18,7 @@ defmodule MeetupBot.SyncExternalEventsTest do
   end
 
   test "perform/1 stores new meetups", %{} do
-    TestServer.add(test_server_meetup(), "/gql", via: :post, to: fn conn ->
+    TestServer.add(test_server_meetup(), "/gql-ext", via: :post, to: fn conn ->
       conn
       |> Plug.Conn.put_resp_content_type("application/json")
       |> Plug.Conn.resp(200, """
@@ -141,7 +141,7 @@ defmodule MeetupBot.SyncExternalEventsTest do
     }
     |> Repo.insert!()
 
-    TestServer.add(test_server_meetup(), "/gql", via: :post, to: fn conn ->
+    TestServer.add(test_server_meetup(), "/gql-ext", via: :post, to: fn conn ->
       conn
       |> Plug.Conn.put_resp_content_type("application/json")
       |> Plug.Conn.resp(200, """
@@ -259,7 +259,7 @@ defmodule MeetupBot.SyncExternalEventsTest do
     }
     |> Repo.insert!()
 
-    TestServer.add(test_server_meetup(), "/gql", via: :post, to: fn conn ->
+    TestServer.add(test_server_meetup(), "/gql-ext", via: :post, to: fn conn ->
       conn
       |> Plug.Conn.put_resp_content_type("application/json")
       |> Plug.Conn.resp(200, """
