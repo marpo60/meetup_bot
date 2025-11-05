@@ -63,17 +63,18 @@ defmodule MeetupBot.Meetup do
 
       fragment F on Group {
         name
-        upcomingEvents(input: { first: 1 }) {
+        events(sort: ASC, first: 1, status: ACTIVE) {
           edges {
             node {
               id
               title
-              going
-              waiting
               dateTime
               endTime
-              timezone
               eventUrl
+              venues {
+                venueType
+                name
+              }
             }
           }
         }
@@ -83,7 +84,7 @@ defmodule MeetupBot.Meetup do
     response =
       Req.new(base_url: host().connect_url())
       |> OpentelemetryReq.attach(span_name: "meetup_bot.req")
-      |> Req.post!(url: "/gql", json: %{query: query})
+      |> Req.post!(url: "/gql-ext", json: %{query: query})
 
     response.body["data"]
     |> Map.values()
@@ -94,7 +95,7 @@ defmodule MeetupBot.Meetup do
   # Non existent meetup
   defp process_response(nil), do: nil
   # Meetup with no upcoming event
-  defp process_response(%{"upcomingEvents" => %{"edges" => []}}), do: nil
+  defp process_response(%{"events" => %{"edges" => []}}), do: nil
 
   defp process_response(meetup) do
     [
@@ -104,21 +105,26 @@ defmodule MeetupBot.Meetup do
           "eventUrl" => event_url,
           "title" => title,
           "dateTime" => dt,
-          "endTime" => edt
+          "endTime" => edt,
+          "venues" => [
+            %{
+              "venueType" => venue_type,
+              "name" => venue_name
+            }
+          ]
         }
       }
-    ] = get_in(meetup, ["upcomingEvents", "edges"])
+    ] = get_in(meetup, ["events", "edges"])
 
-    # Revisit
-    {:ok, dt} =
-      dt
-      |> String.replace(~r/T(.*)-/, "T\\1:00-")
-      |> NaiveDateTime.from_iso8601()
+    {:ok, dt} = dt |> NaiveDateTime.from_iso8601()
+    {:ok, edt} = edt |> NaiveDateTime.from_iso8601()
 
-    {:ok, edt} =
-      edt
-      |> String.replace(~r/T(.*)-/, "T\\1:00-")
-      |> NaiveDateTime.from_iso8601()
+    # venue_type can be "online" or ""
+    # if "", it means the event is in-person
+    venue_name =
+      if venue_type == "" do
+        venue_name
+      end
 
     %{
       source: Event.meetup_source(),
@@ -127,7 +133,8 @@ defmodule MeetupBot.Meetup do
       title: title,
       event_url: event_url,
       datetime: dt,
-      end_datetime: edt
+      end_datetime: edt,
+      venue: venue_name
     }
   end
 

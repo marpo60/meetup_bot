@@ -47,11 +47,10 @@ defmodule MeetupBot.Router do
     body = [
       code: conn.params["code"],
       client_id: System.fetch_env!("CLIENT_ID"),
-      client_secret: System.fetch_env!("CLIENT_SECRET"),
-      redirect_uri: System.fetch_env!("REDIRECT_URL")
+      client_secret: System.fetch_env!("CLIENT_SECRET")
     ]
 
-    response = Req.post!("https://slack.com/api/oauth.access", form: body)
+    response = Req.post!("https://slack.com/api/oauth.v2.access", form: body)
 
     # Hacky way to get the webhooks via Tower
     Logger.critical(response, label: "Response from OAuth")

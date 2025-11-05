@@ -36,7 +36,7 @@ defmodule MeetupBot.MixProject do
       {:ecto_sqlite3, "~> 0.17.2"},
       {:slack_request, "~> 1.0"},
       {:oban, "~> 2.18.2"},
-      {:tower_email, "~> 0.5.0"},
+      {:tower_email, "~> 0.6.0"},
       {:tz, "~> 0.28"},
       {:opentelemetry, "~> 1.3"},
       {:opentelemetry_api, "~> 1.2"},

@@ -26,15 +26,19 @@ defmodule MeetupBot.SyncExternalEventsTest do
         "data": {
           "g0": {
             "name": "Elixir Meetup",
-            "upcomingEvents": {
+            "events": {
               "edges": [
                 {
                   "node": {
                     "id": "123",
                     "title": "Testing with ExUnit",
                     "eventUrl": "http://example.com",
-                    "dateTime": "2024-03-28T22:00-03:00",
-                    "endTime": "2024-03-28T23:00-03:00"
+                    "dateTime": "2024-03-28T22:00:00-03:00",
+                    "endTime": "2024-03-28T23:00:00-03:00",
+                    "venues": [{
+                      "venueType": "",
+                      "name": "Company"
+                    }]
                   }
                 }
               ]
@@ -145,16 +149,21 @@ defmodule MeetupBot.SyncExternalEventsTest do
         "data": {
           "g0": {
             "name": "Elixir Meetup",
-            "upcomingEvents": {
+            "events": {
               "edges": [
                 {
                   "node": {
                     "id": "123",
                     "title": "Testing with ExUnit",
                     "eventUrl": "http://example.com",
-                    "dateTime": "2024-03-29T19:00-03:00",
-                    "endTime": "2024-03-29T23:00-03:00"
+                    "dateTime": "2024-03-29T19:00:00-03:00",
+                    "endTime": "2024-03-29T23:00:00-03:00",
+                    "venues": [{
+                      "venueType": "",
+                      "name": "Company"
+                    }]
                   }
+
                 }
               ]
             }

@@ -41,6 +41,16 @@ defmodule MeetupBot.SyncManualEventsWorker do
         event_url: "https://us06web.zoom.us/meeting/register/OE6XscvQTYyx50TIVgKrXw",
         datetime: ~N[2025-03-07 18:30:00],
         end_datetime: ~N[2025-03-07 19:30:00]
+      },
+      %{
+        source: source,
+        source_id: "2",
+        name: "La Meetup III",
+        title: "La Meetup III",
+        event_url: "https://www.owu.uy/la-meetup",
+        datetime: ~N[2025-11-01 09:00:00],
+        end_datetime: ~N[2025-11-01 18:00:00],
+        venue: "Sinergia Faro"
       }
     ]
   end
