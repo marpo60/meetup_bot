@@ -34,6 +34,8 @@ defmodule MeetupBot.MixProject do
       {:req, "~> 0.5.10"},
       {:ecto_sql, "~> 3.12.0"},
       {:ecto_sqlite3, "~> 0.17.2"},
+      # https://github.com/elixir-sqlite/exqlite/issues/323
+      {:exqlite, "~> 0.29.0"},
       {:slack_request, "~> 1.0"},
       {:oban, "~> 2.18.2"},
       {:tower_email, "~> 0.6.0"},
