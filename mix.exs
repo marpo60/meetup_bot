@@ -30,19 +30,19 @@ defmodule MeetupBot.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:bandit, "~> 1.6.0"},
+      {:bandit, "~> 1.8.0"},
       {:req, "~> 0.5.10"},
-      {:ecto_sql, "~> 3.12.0"},
-      {:ecto_sqlite3, "~> 0.17.2"},
+      {:ecto_sql, "~> 3.13.2"},
+      {:ecto_sqlite3, "~> 0.22.0"},
       # https://github.com/elixir-sqlite/exqlite/issues/323
-      {:exqlite, "~> 0.29.0"},
+      {:exqlite, "~> 0.33.1"},
       {:slack_request, "~> 1.0"},
-      {:oban, "~> 2.18.2"},
+      {:oban, "~> 2.20.1"},
       {:tower_email, "~> 0.6.0"},
       {:tz, "~> 0.28"},
       {:opentelemetry, "~> 1.3"},
       {:opentelemetry_api, "~> 1.2"},
-      {:opentelemetry_bandit, "~> 0.2.0-a"},
+      {:opentelemetry_bandit, "~> 0.3.0"},
       {:opentelemetry_exporter, "~> 1.6"},
       {:opentelemetry_req, "~> 1.0.0-beta.1"},
       {:opentelemetry_ecto, "~> 1.0"},
