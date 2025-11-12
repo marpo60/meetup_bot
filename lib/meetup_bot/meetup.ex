@@ -33,7 +33,8 @@ defmodule MeetupBot.Meetup do
     "tryolabs-tech-talks",
     "fintech-dev-uruguay",
     "flutter-montevideo",
-    "netmeetupuy"
+    "netmeetupuy",
+    "maldonado-tech-meetup"
   ]
 
   alias MeetupBot.Event
