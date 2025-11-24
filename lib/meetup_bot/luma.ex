@@ -31,7 +31,7 @@ defmodule MeetupBot.Luma do
         params: [
           calendar_api_id: calendar_id,
           period: "future",
-          pagination_limit: 20
+          pagination_limit: 100
         ]
       )
 
