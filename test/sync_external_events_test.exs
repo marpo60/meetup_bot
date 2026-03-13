@@ -344,4 +344,43 @@ defmodule MeetupBot.SyncExternalEventsTest do
 
     [] = MeetupCache.all()
   end
+
+  # GH: issue#101
+  test "perform/1 stores new meetups empty venue", %{} do
+    TestServer.add(test_server_meetup(), "/gql-ext",
+      via: :post,
+      to: fn conn ->
+        conn
+        |> Plug.Conn.put_resp_content_type("application/json")
+        |> Plug.Conn.resp(200, """
+        {
+          "data": {
+            "g0": {
+              "name": "Elixir Meetup",
+              "events": {
+                "edges": [
+                  {
+                    "node": {
+                      "id": "123",
+                      "title": "Testing with ExUnit",
+                      "eventUrl": "http://example.com",
+                      "dateTime": "2024-03-28T22:00:00-03:00",
+                      "endTime": "2024-03-28T23:00:00-03:00",
+                      "venues": []
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+        """)
+      end
+    )
+
+    assert :ok = MeetupCacheWorker.perform(%Oban.Job{})
+
+    [meetup] = MeetupCache.all()
+    assert meetup.datetime == ~N[2024-03-28 22:00:00]
+  end
 end
