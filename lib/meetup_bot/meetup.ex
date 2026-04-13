@@ -120,7 +120,7 @@ defmodule MeetupBot.Meetup do
     # if "", it means the event is in-person
     venue_name =
       case venues do
-        [%{"venueType" => "",  "name" => name}] -> name
+        [%{"venueType" => "", "name" => name}] -> name
         _ -> nil
       end
 
