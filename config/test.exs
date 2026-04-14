@@ -12,4 +12,9 @@ config :meetup_bot, :gdg, host: MeetupBot.GDG.TestHost
 config :meetup_bot, :luma, host: MeetupBot.Luma.TestHost
 config :meetup_bot, Oban, testing: :manual
 
+config :meetup_bot, basic_auth: [
+  username: "admin",
+  password: "admin"
+]
+
 config :tower, :reporters, [Tower.EphemeralReporter]

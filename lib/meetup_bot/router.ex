@@ -10,6 +10,7 @@ defmodule MeetupBot.Router do
   alias OpenTelemetry.Tracer
 
   plug(Plug.Logger)
+  plug(:basic_auth_for_oban)
 
   plug(Plug.Parsers,
     parsers: [:urlencoded],
@@ -108,7 +109,18 @@ defmodule MeetupBot.Router do
     |> send_resp(200, Jason.encode!(%{meetups: meetups}))
   end
 
+  forward "/oban", to: Ocelot.Router, private: %{repo: MeetupBot.Repo, oban: Oban}
+
   match _ do
     send_resp(conn, 404, ":(")
+  end
+
+  defp basic_auth_for_oban(conn, _opts) do
+    if String.starts_with?(conn.request_path, "/oban") do
+      [username: username, password: password] = Application.fetch_env!(:meetup_bot, :basic_auth)
+      Plug.BasicAuth.basic_auth(conn, username: username, password: password)
+    else
+      conn
+    end
   end
 end
