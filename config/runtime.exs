@@ -17,8 +17,9 @@ if config_env() == :prod do
 
   config :meetup_bot, MeetupBot.Repo, database: database_path
 
-  config :meetup_bot, basic_auth: [
-    username: System.fetch_env!("BASIC_AUTH_USERNAME"),
-    password: System.fetch_env!("BASIC_AUTH_PASSWORD")
-  ]
+  config :meetup_bot,
+    basic_auth: [
+      username: System.fetch_env!("BASIC_AUTH_USERNAME"),
+      password: System.fetch_env!("BASIC_AUTH_PASSWORD")
+    ]
 end

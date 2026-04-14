@@ -109,7 +109,7 @@ defmodule MeetupBot.Router do
     |> send_resp(200, Jason.encode!(%{meetups: meetups}))
   end
 
-  forward "/oban", to: Ocelot.Router, private: %{repo: MeetupBot.Repo, oban: Oban}
+  forward("/oban", to: Ocelot.Router, private: %{repo: MeetupBot.Repo, oban: Oban})
 
   match _ do
     send_resp(conn, 404, ":(")
