@@ -4,7 +4,7 @@
   <br>
 </h1>
 
-<h4 align="center">Publish upcoming meetups to Slack</h4>
+<h4 align="center">Publish upcoming meetups to Slack and Telegram</h4>
 
 <p align="center">
   <img src="proximos-meetups.jpg">

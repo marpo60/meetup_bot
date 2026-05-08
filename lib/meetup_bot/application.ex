@@ -29,7 +29,8 @@ defmodule MeetupBot.Application do
             {"@hourly", MeetupBot.GDGCacheWorker},
             {"@hourly", MeetupBot.LumaCacheWorker},
             {"0 8 * * *", MeetupBot.BackupDatabaseWorker},
-            {MeetupBot.PostToSlackWorker.cron(), MeetupBot.PostToSlackWorker}
+            {MeetupBot.PostToSlackWorker.cron(), MeetupBot.PostToSlackWorker},
+            {MeetupBot.PostToTelegramWorker.cron(), MeetupBot.PostToTelegramWorker}
           ]},
          {Oban.Plugins.Pruner, max_age: 300_000}
        ],
