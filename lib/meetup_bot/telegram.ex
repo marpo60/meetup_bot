@@ -19,9 +19,6 @@ defmodule MeetupBot.Telegram do
           }
         }
       )
-    else
-      Logger.warning("Telegram: TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID not configured")
-      :skip
     end
   end
 
@@ -31,11 +28,35 @@ defmodule MeetupBot.Telegram do
 
   def build_text(meetups) do
     header = "Los próximos meetups son:\n"
-    meetups_text = MeetupBot.MeetupFormatter.to_bullet_list(meetups, &telegram_link_formatter/2)
+    meetups_text = Enum.map_join(meetups, "\n", fn meetup -> to_bullet_item(meetup) end)
     header <> meetups_text
   end
 
   defp telegram_link_formatter(name, url) do
     "<a href=\"#{url}\">#{name}</a>"
+  end
+
+  defp to_bullet_item(meetup) do
+    datetime =
+      Calendar.strftime(
+        meetup.datetime,
+        "%a, %-d %b - %H:%M",
+        abbreviated_month_names: fn month ->
+          {"Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dec"}
+          |> elem(month - 1)
+        end,
+        abbreviated_day_of_week_names: fn day_of_week ->
+          {"Lun", "Mar", "Mie", "Jue", "Vie", "Sab", "Dom"} |> elem(day_of_week - 1)
+        end
+      )
+
+    event_with_link = "<a href=\"#{meetup.event_url}\">#{meetup.name}</a>"
+
+    venue =
+      if meetup.venue do
+        "@ #{meetup.venue}"
+      end
+
+    "• #{datetime} - #{event_with_link} #{venue}"
   end
 end

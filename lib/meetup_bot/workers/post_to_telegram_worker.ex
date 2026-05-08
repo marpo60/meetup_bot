@@ -1,10 +1,9 @@
-defmodule MeetupBot.PostMessagesWorker do
+defmodule MeetupBot.PostToTelegramWorker do
   use Oban.Worker
 
   require OpenTelemetry.Tracer
 
   alias MeetupBot.MeetupCache
-  alias MeetupBot.Slack
   alias MeetupBot.Telegram
   alias OpenTelemetry.Tracer
 
@@ -20,13 +19,9 @@ defmodule MeetupBot.PostMessagesWorker do
   @impl true
   def perform(%Oban.Job{}) do
     Tracer.with_span "oban.perform" do
-      Tracer.set_attributes([{:worker, "PostMessagesWorker"}])
+      Tracer.set_attributes([{:worker, "PostToTelegramWorker"}])
 
-      meetups = MeetupCache.values()
-
-      Slack.build_text(meetups) |> Slack.post()
-      Telegram.build_text(meetups) |> Telegram.post()
-
+      MeetupCache.values() |> Telegram.build_text() |> Telegram.post()
       :ok
     end
   end
