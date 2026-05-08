@@ -32,10 +32,6 @@ defmodule MeetupBot.Telegram do
     header <> meetups_text
   end
 
-  defp telegram_link_formatter(name, url) do
-    "<a href=\"#{url}\">#{name}</a>"
-  end
-
   defp to_bullet_item(meetup) do
     datetime =
       Calendar.strftime(
