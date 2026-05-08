@@ -56,7 +56,8 @@ defmodule MeetupBot.Luma do
       title: event["name"],
       event_url: "https://lu.ma/" <> event["url"],
       datetime: DateTime.to_naive(start_dt),
-      end_datetime: DateTime.to_naive(end_dt)
+      end_datetime: DateTime.to_naive(end_dt),
+      venue: get_in(event, ["geo_address_info", "address"])
     }
   end
 

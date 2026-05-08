@@ -34,7 +34,8 @@ defmodule MeetupBot.Meetup do
     "fintech-dev-uruguay",
     "flutter-montevideo",
     "netmeetupuy",
-    "maldonado-tech-meetup"
+    "maldonado-tech-meetup",
+    "1950labs-tech-talks"
   ]
 
   alias MeetupBot.Event
@@ -107,12 +108,7 @@ defmodule MeetupBot.Meetup do
           "title" => title,
           "dateTime" => dt,
           "endTime" => edt,
-          "venues" => [
-            %{
-              "venueType" => venue_type,
-              "name" => venue_name
-            }
-          ]
+          "venues" => venues
         }
       }
     ] = get_in(meetup, ["events", "edges"])
@@ -123,8 +119,9 @@ defmodule MeetupBot.Meetup do
     # venue_type can be "online" or ""
     # if "", it means the event is in-person
     venue_name =
-      if venue_type == "" do
-        venue_name
+      case venues do
+        [%{"venueType" => "", "name" => name}] -> name
+        _ -> nil
       end
 
     %{

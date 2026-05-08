@@ -22,8 +22,8 @@ defmodule MeetupBot.OverlapDetectorTest do
         name: "Elixir Meetup",
         title: "Phoenix Sync",
         event_url: "http://example.com",
-        datetime: ~N[2026-03-31 19:00:00],
-        end_datetime: ~N[2026-03-31 21:00:00]
+        datetime: ~N[2099-03-31 19:00:00],
+        end_datetime: ~N[2099-03-31 21:00:00]
       }
       |> Repo.insert!()
 
@@ -35,8 +35,8 @@ defmodule MeetupBot.OverlapDetectorTest do
         name: "Ruby Meetup",
         title: "Rails Sync",
         event_url: "http://example.com",
-        datetime: ~N[2026-03-31 19:00:00],
-        end_datetime: ~N[2026-03-31 21:00:00]
+        datetime: ~N[2099-03-31 19:00:00],
+        end_datetime: ~N[2099-03-31 21:00:00]
       }
       |> Repo.insert!()
 
@@ -49,8 +49,8 @@ defmodule MeetupBot.OverlapDetectorTest do
       assert output =~
                """
                [critical]   New Overlap
-                 1 - Elixir Meetup - 2026-03-31 19:00:00
-                 2 - Ruby Meetup - 2026-03-31 19:00:00
+                 1 - Elixir Meetup - 2099-03-31 19:00:00
+                 2 - Ruby Meetup - 2099-03-31 19:00:00
                """
                |> String.trim()
 
