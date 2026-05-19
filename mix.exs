@@ -40,6 +40,7 @@ defmodule MeetupBot.MixProject do
       {:oban, "~> 2.18.2"},
       {:ocelot, "~> 0.1.0"},
       {:tower_email, "~> 0.6"},
+      {:tower_opentelemetry, "~> 0.1"},
       {:tz, "~> 0.28"},
       {:opentelemetry, "~> 1.3"},
       {:opentelemetry_api, "~> 1.2"},
