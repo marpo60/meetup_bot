@@ -13,7 +13,7 @@
 #
 ARG ELIXIR_VERSION=1.17.2
 ARG OTP_VERSION=27.0.1
-ARG DEBIAN_VERSION=bullseye-20240812-slim
+ARG DEBIAN_VERSION=trixie-20260610-slim
 
 ARG BUILDER_IMAGE="hexpm/elixir:${ELIXIR_VERSION}-erlang-${OTP_VERSION}-debian-${DEBIAN_VERSION}"
 ARG RUNNER_IMAGE="debian:${DEBIAN_VERSION}"
@@ -63,7 +63,7 @@ RUN mix release
 FROM ${RUNNER_IMAGE}
 
 RUN apt-get update -y && \
-  apt-get install -y libstdc++6 openssl libncurses5 locales ca-certificates \
+  apt-get install -y libstdc++6 openssl libncurses6 locales ca-certificates \
   wget systemctl \
   supervisor \
   sqlite3 \
