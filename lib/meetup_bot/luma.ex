@@ -13,7 +13,7 @@ defmodule MeetupBot.Luma do
     # Cursor Community
     "cal-61Cv6COs4g9GKw7",
     # SwiftMate
-    "cal-Je0mc758PtYqTba"
+    "cal-IwHuljiE8kLwwAX"
     # Add more calendar ids here, e.g. "cal-XXXXXXX" # Calendar Name
   ]
 
