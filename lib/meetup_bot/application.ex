@@ -28,6 +28,7 @@ defmodule MeetupBot.Application do
             {"@hourly", MeetupBot.MeetupCacheWorker},
             {"@hourly", MeetupBot.GDGCacheWorker},
             {"@hourly", MeetupBot.LumaCacheWorker},
+            {"@hourly", MeetupBot.EventbriteCacheWorker},
             {"0 8 * * *", MeetupBot.BackupDatabaseWorker},
             {MeetupBot.PostToSlackWorker.cron(), MeetupBot.PostToSlackWorker},
             {MeetupBot.PostToTelegramWorker.cron(), MeetupBot.PostToTelegramWorker}
