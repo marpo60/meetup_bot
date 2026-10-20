@@ -34,8 +34,7 @@ defmodule MeetupBot.EventbriteTest do
               "start": {"utc": "2024-03-30T22:00:00Z", "local": "2024-03-30T19:00:00"},
               "end": {"utc": "2024-03-31T01:00:00Z", "local": "2024-03-30T22:00:00"},
               "online_event": false,
-              "venue": {"name": "Sinergia"},
-              "organizer": {"name": "Women Techmakers Uruguay"}
+              "venue": {"name": "Sinergia"}
             },
             {
               "id": "evt-2",
@@ -44,8 +43,7 @@ defmodule MeetupBot.EventbriteTest do
               "start": {"utc": "2024-04-02T22:00:00Z", "local": "2024-04-02T19:00:00"},
               "end": {"utc": "2024-04-02T23:00:00Z", "local": "2024-04-02T20:00:00"},
               "online_event": true,
-              "venue": null,
-              "organizer": {"name": "Women Techmakers Uruguay"}
+              "venue": null
             }
           ]
         }
@@ -60,7 +58,7 @@ defmodule MeetupBot.EventbriteTest do
 
     assert in_person.source == "eventbrite"
     assert in_person.source_id == "evt-1"
-    assert in_person.name == "Women Techmakers Uruguay"
+    assert in_person.name == "WTM Meetup"
     assert in_person.title == "WTM Meetup"
     assert in_person.event_url == "https://www.eventbrite.com/e/wtm-meetup-1"
     assert in_person.datetime == ~N[2024-03-30 19:00:00]

@@ -33,7 +33,7 @@ defmodule MeetupBot.Eventbrite do
         params: [
           status: "live",
           order_by: "start_asc",
-          expand: "venue,organizer"
+          expand: "venue"
         ]
       )
 
@@ -59,7 +59,7 @@ defmodule MeetupBot.Eventbrite do
     %{
       source: Event.eventbrite_source(),
       source_id: event["id"],
-      name: get_in(event, ["organizer", "name"]) || title,
+      name: title,
       title: title,
       event_url: event["url"],
       datetime: DateTime.to_naive(start_dt),
