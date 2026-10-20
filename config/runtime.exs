@@ -17,6 +17,8 @@ if config_env() == :prod do
 
   config :meetup_bot, MeetupBot.Repo, database: database_path
 
+  config :meetup_bot, :eventbrite, token: System.get_env("EVENTBRITE_TOKEN")
+
   config :meetup_bot,
     basic_auth: [
       username: System.fetch_env!("BASIC_AUTH_USERNAME"),

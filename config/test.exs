@@ -10,6 +10,7 @@ config :opentelemetry, traces_exporter: :none
 config :meetup_bot, :meetup, host: MeetupBot.Meetup.TestHost
 config :meetup_bot, :gdg, host: MeetupBot.GDG.TestHost
 config :meetup_bot, :luma, host: MeetupBot.Luma.TestHost
+config :meetup_bot, :eventbrite, host: MeetupBot.Eventbrite.TestHost, token: "test-token"
 config :meetup_bot, Oban, testing: :manual
 
 config :meetup_bot,

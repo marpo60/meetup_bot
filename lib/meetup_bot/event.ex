@@ -39,12 +39,16 @@ defmodule MeetupBot.Event do
   @doc "Source identifier for Luma events"
   def luma_source, do: "luma"
 
+  @doc "Source identifier for Eventbrite events"
+  def eventbrite_source, do: "eventbrite"
+
   def sources do
     [
       meetup_source(),
       gdg_source(),
       manual_source(),
-      luma_source()
+      luma_source(),
+      eventbrite_source()
     ]
   end
 end

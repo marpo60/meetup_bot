@@ -1,6 +1,7 @@
 Mox.defmock(MeetupBot.Meetup.TestHost, for: MeetupBot.Meetup.Host)
 Mox.defmock(MeetupBot.GDG.TestHost, for: MeetupBot.GDG.Host)
 Mox.defmock(MeetupBot.Luma.TestHost, for: MeetupBot.Luma.Host)
+Mox.defmock(MeetupBot.Eventbrite.TestHost, for: MeetupBot.Eventbrite.Host)
 
 defmodule Helpers do
   def test_server_meetup do
@@ -20,6 +21,13 @@ defmodule Helpers do
   def test_server_luma do
     {:ok, test_server} = TestServer.start()
     Mox.stub(MeetupBot.Luma.TestHost, :connect_url, fn -> TestServer.url(test_server) end)
+
+    test_server
+  end
+
+  def test_server_eventbrite do
+    {:ok, test_server} = TestServer.start()
+    Mox.stub(MeetupBot.Eventbrite.TestHost, :connect_url, fn -> TestServer.url(test_server) end)
 
     test_server
   end
