@@ -115,6 +115,32 @@ defmodule MeetupBot.SyncExternalEventsTest do
       end
     )
 
+    TestServer.add(test_server_luma, "/calendar/get-items",
+      via: :get,
+      to: fn conn ->
+        conn
+        |> Plug.Conn.put_resp_content_type("application/json")
+        |> Plug.Conn.resp(200, """
+        {
+          "entries": []
+        }
+        """)
+      end
+    )
+
+    TestServer.add(test_server_luma, "/calendar/get-items",
+      via: :get,
+      to: fn conn ->
+        conn
+        |> Plug.Conn.put_resp_content_type("application/json")
+        |> Plug.Conn.resp(200, """
+        {
+          "entries": []
+        }
+        """)
+      end
+    )
+
     assert :ok = MeetupCacheWorker.perform(%Oban.Job{})
     assert :ok = GDGCacheWorker.perform(%Oban.Job{})
     assert :ok = LumaCacheWorker.perform(%Oban.Job{})
@@ -251,6 +277,32 @@ defmodule MeetupBot.SyncExternalEventsTest do
       end
     )
 
+    TestServer.add(test_server_luma, "/calendar/get-items",
+      via: :get,
+      to: fn conn ->
+        conn
+        |> Plug.Conn.put_resp_content_type("application/json")
+        |> Plug.Conn.resp(200, """
+        {
+          "entries": []
+        }
+        """)
+      end
+    )
+
+    TestServer.add(test_server_luma, "/calendar/get-items",
+      via: :get,
+      to: fn conn ->
+        conn
+        |> Plug.Conn.put_resp_content_type("application/json")
+        |> Plug.Conn.resp(200, """
+        {
+          "entries": []
+        }
+        """)
+      end
+    )
+
     assert :ok = MeetupCacheWorker.perform(%Oban.Job{})
     assert :ok = GDGCacheWorker.perform(%Oban.Job{})
     assert :ok = LumaCacheWorker.perform(%Oban.Job{})
@@ -311,6 +363,32 @@ defmodule MeetupBot.SyncExternalEventsTest do
     )
 
     test_server_luma = test_server_luma()
+
+    TestServer.add(test_server_luma, "/calendar/get-items",
+      via: :get,
+      to: fn conn ->
+        conn
+        |> Plug.Conn.put_resp_content_type("application/json")
+        |> Plug.Conn.resp(200, """
+        {
+          "entries": []
+        }
+        """)
+      end
+    )
+
+    TestServer.add(test_server_luma, "/calendar/get-items",
+      via: :get,
+      to: fn conn ->
+        conn
+        |> Plug.Conn.put_resp_content_type("application/json")
+        |> Plug.Conn.resp(200, """
+        {
+          "entries": []
+        }
+        """)
+      end
+    )
 
     TestServer.add(test_server_luma, "/calendar/get-items",
       via: :get,

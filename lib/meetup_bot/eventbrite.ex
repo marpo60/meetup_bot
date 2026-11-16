@@ -15,7 +15,9 @@ defmodule MeetupBot.Eventbrite do
   # e.g. https://www.eventbrite.com/o/organizer-name-12345678901
   @organizer_ids [
     # OWU
-    "109017238961"
+    "109017238961",
+    # OWASP Uruguay Chapter (https://www.eventbrite.com/o/owasp-uruguay-chapter-121832208177)
+    "121832208177"
     # Add more organizer ids here, e.g. "12345678901" # Organizer Name
   ]
 

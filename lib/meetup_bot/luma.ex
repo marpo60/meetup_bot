@@ -13,7 +13,11 @@ defmodule MeetupBot.Luma do
     # Cursor Community
     "cal-61Cv6COs4g9GKw7",
     # SwiftMate
-    "cal-IwHuljiE8kLwwAX"
+    "cal-IwHuljiE8kLwwAX",
+    # SREday + LLMday + PLATFORMday; hosts LLMday Montevideo; non-Uruguay events already dropped by the country filter
+    "cal-cPvICdCwmTwqvT9",
+    # Qubika; hosts Claude Meetup Montevideo
+    "cal-2Ohfq8XH8WCcBdT"
     # Add more calendar ids here, e.g. "cal-XXXXXXX" # Calendar Name
   ]
 
